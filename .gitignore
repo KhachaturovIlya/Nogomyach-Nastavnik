@@ -1,0 +1,38 @@
+# --- Скомпилированные файлы (Артефакты) ---
+*.class
+*.log
+*.jar
+*.war
+*.zip
+*.tar.gz
+*.rar
+
+# --- Папки сборки (Build) ---
+bin/
+out/
+target/
+build/
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# --- Системные файлы ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Временные файлы ---
+*.swp
+*.bak
+*.tmp
+*~
+
+# --- Настройки других редакторов (на всякий случай) ---
+.vscode/
+.settings/
+.classpath
+.project
+.factorypath
