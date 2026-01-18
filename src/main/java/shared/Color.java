@@ -1,5 +1,5 @@
 package shared;
 
-public record ColorDTO (
+public record Color(
         int argb
 ) {}
