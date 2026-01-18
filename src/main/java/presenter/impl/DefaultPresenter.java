@@ -2,19 +2,25 @@ package presenter.impl;
 
 import presenter.IPresenter;
 import shared.ActionWidgetDTO;
+import shared.UserInterfaceDTO;
 import shared.VisualWidgetDTO;
+import view.Action;
 import view.IView;
-import presenter.impl.Widget;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultPresenter implements IPresenter {
     // Fields:
 
+    private boolean cycleState = true;
+
     private IView view;
     private List<Widget> buttons;
     private List<Widget> labels;
+
+    private final CommandLibrary commandLibrary = new CommandLibrary();
 
     // Private DTO methods:
 
@@ -62,18 +68,61 @@ public class DefaultPresenter implements IPresenter {
         return DTOs;
     }
 
+    private void shutdown() {
+        this.cycleState = false;
+    }
+
+    private void loadCommands() {
+        commandLibrary.registerCommand("EXIT", List.of(
+            this::shutdown
+        ));
+    }
+
+    private void handleButtonClick(int id) {
+        for (Widget button : buttons) {
+            if (button.getId() == id) {
+                button.executeClick();
+                break;
+            }
+        }
+    }
+
+    private void processActions(List<Action> actions) {
+        for  (Action action : actions) {
+            System.out.println("Working with action: " + action);
+            switch (action) {
+                case Action.WidgetClicked(int id) -> {
+                    handleButtonClick(id);
+                }
+                case Action.Quit() -> {
+                    System.out.println("Shutting down...");
+                    view.close();
+                    shutdown();
+                }
+            }
+        }
+    }
+
     // Public methods:
 
     public DefaultPresenter(IView view, List<Widget> buttons, List<Widget> labels) {
         this.view = view;
         this.buttons = buttons != null ? buttons : new ArrayList<>();
         this.labels = labels != null ? labels : new ArrayList<>();
+
+        this.loadCommands();
     }
 
     @Override
     public boolean run(double deltaTime) {
+        UserInterfaceDTO uiDTO = new UserInterfaceDTO(prepareVisualDTO());
 
+        view.renderUI(uiDTO);
 
-        return false;
+        processActions(view.getActions(prepareActionDTO()));
+
+        view.update();
+
+        return cycleState;
     }
 }

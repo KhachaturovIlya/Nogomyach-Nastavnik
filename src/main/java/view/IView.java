@@ -11,7 +11,9 @@ public interface IView {
 
     void renderUI(UserInterfaceDTO userInterfaceDTO);
 
-    List<Action> getActions();
+    List<Action> getActions(List<ActionWidgetDTO> actionWidgetDTOs);
 
-    void update(List<ActionWidgetDTO> actionWidgetDTOs);
+    void update();
+
+    void close();
 }
