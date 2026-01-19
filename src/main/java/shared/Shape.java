@@ -1,5 +1,8 @@
 package shared;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 public sealed interface Shape {
     record Circle(double radius) implements Shape {}
     record Rectangle(double width, double height) implements Shape {}

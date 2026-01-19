@@ -33,7 +33,9 @@ public class Widget {
         this.text = text;
         this.textColor = textColor;
         this.normalizedPosition = normalizedPosition;
-        this.clickActions.addAll(clickActions);
+        if (clickActions != null) {
+            this.clickActions.addAll(clickActions);
+        }
     }
 
     public void executeClick() {

@@ -1,5 +1,8 @@
 package shared;
 
 public record Color(
-        int argb
+    short red,
+    short green,
+    short blue,
+    short alpha
 ) {}
