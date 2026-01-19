@@ -13,8 +13,7 @@ import shared.Vector2;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 
@@ -69,6 +68,7 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
     private Widget assembleButton(WidgetConfig widgetConfig, CommandLibrary commandLibrary) {
         return Widget.createButton(
             counter.getAndIncrement(),
+            widgetConfig.active(),
             widgetConfig.shape(),
             widgetConfig.shapeColor(),
             widgetConfig.position(),
@@ -82,14 +82,50 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
         return construct(configPath, this::assembleButton, commandLibrary);
     }
 
-    private Widget assembleLabel(WidgetConfig widgetConfig, CommandLibrary commandLibrary) {
-        return Widget.createLabel(
-            widgetConfig.shape(),
-            widgetConfig.shapeColor(),
-            widgetConfig.text(),
-            widgetConfig.textColor(),
-            widgetConfig.position()
-        );
+    private Map<Integer, Widget> getChildrenLabels(List<WidgetConfig> labels, CommandLibrary commandLibrary) throws IOException {
+        if (labels.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        Map<Integer, Widget> childrenLabels = new HashMap<>();
+        for (WidgetConfig widgetConfig : labels) {
+            Widget newLabel = assembleLabel(widgetConfig, commandLibrary);
+            childrenLabels.put(newLabel.getId(), newLabel);
+        }
+        return childrenLabels;
+    }
+
+    private Map<Integer, Widget> getChildrenButtons(List<WidgetConfig> buttons, CommandLibrary commandLibrary) throws IOException {
+        if (buttons.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        Map<Integer, Widget> childrenButtons = new HashMap<>();
+        for (WidgetConfig widgetConfig : buttons) {
+            Widget newLabel = assembleButton(widgetConfig, commandLibrary);
+            childrenButtons.put(newLabel.getId(), newLabel);
+        }
+        return childrenButtons;
+    }
+
+    private Widget assembleLabel(WidgetConfig widgetConfig, CommandLibrary commandLibrary) throws RuntimeException {
+        try {
+            return Widget.createLabel(
+                counter.getAndIncrement(),
+                widgetConfig.active(),
+                widgetConfig.shape(),
+                widgetConfig.shapeColor(),
+                widgetConfig.text(),
+                widgetConfig.textColor(),
+                widgetConfig.position(),
+                getChildrenLabels(widgetConfig.subLabels(), commandLibrary),
+                getChildrenButtons(widgetConfig.subButtons(), commandLibrary),
+                null
+            );
+        } catch (IOException exception) {
+            System.err.println("Could not read config file: " + exception.getMessage());
+            throw new RuntimeException(exception);
+        }
     }
 
     @Override

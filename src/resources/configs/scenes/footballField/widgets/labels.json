@@ -1,13 +1,29 @@
 [
   {
-    "shape": {
-      "type": "circle",
-      "radius": 0.05
-    },
-    "shapeColor": { "red" : 255, "green" : 255, "blue" : 255, "alpha" : 255 },
-    "text": "First ever button, if you see this, be happy",
-    "textColor": { "red" : 0, "green" : 0, "blue" : 0, "alpha" : 0 },
-    "position": { "x": 0.9, "y": 0.05 },
-    "actionName": "EXIT"
+    "active" : true,
+    "shape": { "type": "rectangle", "width": 0.2, "height": 0.9 },
+    "shapeColor": { "red": 200, "green": 200, "blue": 200, "alpha": 220 },
+    "text": "MAIN_SIDEBAR",
+    "textColor" : { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+    "position": { "x": 0.02, "y": 0.05 },
+    "subLabels": [
+      {
+        "active" : true,
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.3 },
+        "shapeColor": { "red": 60, "green": 60, "blue": 60, "alpha": 255 },
+        "text": "USER_INFO_PANEL",
+        "position": { "x": 0.05, "y": 0.05 },
+        "subLabels": [
+          {
+            "active" : true,
+            "shape": { "type": "rectangle", "width": 0.8, "height": 0.2 },
+            "shapeColor": { "red": 200, "green": 50, "blue": 50, "alpha": 255 },
+            "text": "LEAVE GAME",
+            "position": { "x": 0.1, "y": 0.7 },
+            "actionName": "EXIT"
+          }
+        ]
+      }
+    ]
   }
 ]

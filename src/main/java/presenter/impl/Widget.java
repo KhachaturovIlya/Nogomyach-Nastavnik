@@ -4,8 +4,7 @@ import shared.Color;
 import shared.Shape;
 import shared.Vector2;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Widget {
     // Fields:
@@ -21,21 +20,27 @@ public class Widget {
 
     final private Vector2 normalizedPosition;
 
-    private final List<Runnable> clickActions = new ArrayList<>();
+    private final Map<Integer, Widget> childrenLabels;
+    private final Map<Integer, Widget> childrenButtons;
+
+    private final List<Runnable> clickActions;
     // Methods:
 
-    private Widget(int id, Shape shape, Color shapeColor, String text,
-        Color textColor, Vector2 normalizedPosition, List<Runnable> clickActions) {
+    private Widget(int id, boolean active, Shape shape, Color shapeColor, String text,
+        Color textColor, Vector2 normalizedPosition, Map<Integer, Widget> childrenLabels,
+        Map<Integer, Widget> childrenButtons, List<Runnable> clickActions) {
         this.id = id;
-        this.active = false;
+        this.active = active;
         this.shape = shape;
         this.shapeColor = shapeColor;
         this.text = text;
         this.textColor = textColor;
         this.normalizedPosition = normalizedPosition;
-        if (clickActions != null) {
-            this.clickActions.addAll(clickActions);
-        }
+
+        this.childrenLabels = Objects.requireNonNullElseGet(childrenLabels, HashMap::new);
+        this.childrenButtons = Objects.requireNonNullElseGet(childrenButtons, HashMap::new);
+
+        this.clickActions = Objects.requireNonNullElseGet(clickActions, ArrayList::new);
     }
 
     public void executeClick() {
@@ -54,17 +59,20 @@ public class Widget {
         this.text = other.text;
         this.textColor = other.textColor;
         this.normalizedPosition = other.normalizedPosition;
-        this.clickActions.addAll(other.clickActions);
+        this.childrenButtons = other.childrenButtons;
+        this.childrenLabels = other.childrenLabels;
+        this.clickActions = other.clickActions;
     }
 
-    public static Widget createButton(int id, Shape shape, Color color, Vector2 position,
+    public static Widget createButton(int id, boolean active, Shape shape, Color color, Vector2 position,
         List<Runnable> clickActions) {
-        return new Widget(id, shape, color, "", color, position, clickActions);
+        return new Widget(id, active, shape, color, "", color, position, null, null, clickActions);
     }
 
-    public static Widget createLabel(Shape shape, Color shapeColor,
-        String text, Color textColor, Vector2 position) {
-        return new Widget(-1, shape, shapeColor, text, textColor, position, null);
+    public static Widget createLabel(int id, boolean active, Shape shape, Color shapeColor,
+        String text, Color textColor, Vector2 position, Map<Integer, Widget> childrenLabels,
+            Map<Integer, Widget> childrenButtons, List<Runnable> clickActions) {
+        return new Widget(id, active, shape, shapeColor, text, textColor, position, childrenLabels, childrenButtons, null);
     }
 
     public void setText(String text) {

@@ -2,6 +2,8 @@ package view.impl;
 
 import shared.ActionWidgetDTO;
 import shared.UserInterfaceDTO;
+import shared.VisualWidgetDTO;
+import shared.Shape;
 import shared.WorldDTO;
 import view.Action;
 import view.IView;
@@ -21,9 +23,63 @@ public class DefaultView implements IView {
 
     private final Queue<Action> actionBuffer = new java.util.concurrent.ConcurrentLinkedQueue<>();
 
+    private void DrawWorldDTO(Graphics2D graphics) {
+
+    }
+
+    private void DrawUIDTO(Graphics2D graphics) {
+        if (userInterfaceDTO == null) return;
+
+        if (userInterfaceDTO.widgetDTOS() == null || userInterfaceDTO.widgetDTOS().isEmpty()) return;
+
+        for (VisualWidgetDTO widgetDTO : userInterfaceDTO.widgetDTOS()) {
+            int x = (int) (widgetDTO.position().x * canvas.getWidth());
+            int y = (int) (widgetDTO.position().y * canvas.getHeight());
+
+            double w = canvas.getWidth();
+            double h = canvas.getHeight();
+
+            graphics.setColor(new Color(widgetDTO.shapeColor().getFullColor(), true));
+
+            Shape shape = widgetDTO.shape();
+            switch (shape) {
+                case Shape.Circle circle -> {
+                    w *= circle.radius() * 2;
+                    h *= circle.radius() * 2;
+                    graphics.fillOval(x, y, (int) w, (int) h);
+                }
+                case Shape.Rectangle rectangle -> {
+                    w *= rectangle.width();
+                    h *= rectangle.height();
+                    graphics.fillRect(x, y, (int) w, (int) h);
+                }
+                case Shape.Square square -> {
+                    w *= square.side();
+                    h *= square.side();
+                    graphics.fillRect(x, y, (int) w, (int) h);
+                }
+            }
+
+            if (widgetDTO.text() != null) {
+                graphics.setColor(new Color(widgetDTO.textColor().getFullColor(), true));
+
+                FontMetrics metrics = graphics.getFontMetrics(graphics.getFont());
+
+                int textX = (int) (x + (w - metrics.stringWidth(widgetDTO.text())) / 2);
+                int textY = (int) (y + ((h - metrics.getHeight()) / 2) + metrics.getAscent());
+
+                graphics.drawString(widgetDTO.text(), textX, textY);
+            }
+        }
+    }
+
     private void reDraw(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        DrawWorldDTO(graphics);
+
+        DrawUIDTO(graphics);
     }
 
     private void initWindow() {
