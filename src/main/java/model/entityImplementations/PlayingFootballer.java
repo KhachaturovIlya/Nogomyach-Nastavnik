@@ -1,30 +1,28 @@
 package model.entityImplementations;
 
-import model.subclasses.Roles;
-import model.entityInterfaces.IFootballer;
-import model.subclasses.FootballCharacteristics;
+import model.subclasses.BaseFootballerCharacteristics;
+import model.entityInterfaces.IPlayingFootballer;
+import model.subclasses.FootballerCharacteristicsEnum;
 import shared.Vector3;
 
-import java.util.List;
-
-public class Footballer implements IFootballer {
-    private FootballerProfile _profile;
+public class PlayingFootballer implements IPlayingFootballer {
+    private BaseFootballerCharacteristics _characteristics;
     private Vector3 _speed = new Vector3(0, 0, 0);
     private Vector3 _acceleration = new Vector3(0, 0, 0);
 
-    //пускай у нас выносливость измеряется в процентах
     private double _stamina = 1.0;
+    private short _ID;
 
     private String _role;
     private Vector3 _size;
     private Vector3 _position;
 
-    public Footballer(FootballerProfile profile, String role) {
-        _profile = profile;
+    public PlayingFootballer(BaseFootballerCharacteristics characteristics, String role) {
+        _characteristics = characteristics;
         _role = role;
 
         // пока хз что сделать с размером футболиста
-        _size = new Vector3(0.25, 0.25, profile.characteristic(FootballCharacteristics.HEIGHT));
+        _size = new Vector3(0.25, 0.25, characteristics.characteristic(FootballerCharacteristicsEnum.HEIGHT));
     }
 
     @Override
@@ -38,23 +36,33 @@ public class Footballer implements IFootballer {
     }
 
     @Override
-    public short number() {
-        return _profile.number();
+    public double stamina() {
+        return _stamina;
     }
 
     @Override
-    public short charasteristic(FootballCharacteristics characteristic) {
-        return _profile.characteristic(characteristic);
+    public void increaseStamina(double add) {
+        _stamina += add;
     }
 
-    // для менюшки с информацией об игроке - как в фифе
     @Override
-    public List<Roles> preferedRoles() {
-        return _profile.preferedRoles();
+    public void decreaseStamina(double loss) {
+        _stamina -= loss;
     }
 
-    public short age() {
-        return _profile.age();
+    @Override
+    public short ID() {
+        return _ID;
+    }
+
+    @Override
+    public void setID(short ID) {
+        _ID = ID;
+    }
+
+    @Override
+    public short charasteristic(FootballerCharacteristicsEnum characteristic) {
+        return _characteristics.characteristic(characteristic);
     }
 
     @Override
@@ -116,10 +124,5 @@ public class Footballer implements IFootballer {
     @Override
     public Vector3 position() {
         return _position;
-    }
-
-    @Override
-    public String name() {
-        return _profile.name();
     }
 }

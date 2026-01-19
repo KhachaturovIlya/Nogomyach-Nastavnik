@@ -1,29 +1,31 @@
 package model.entityImplementations;
 
-import model.subclasses.Roles;
+import model.subclasses.BaseFootballerCharacteristics;
+import model.subclasses.Nationality;
+import model.subclasses.Role;
 import model.entityInterfaces.IFootballerProfile;
-import model.subclasses.FootballCharacteristics;
+import model.subclasses.FootballerCharacteristicsEnum;
 
 import java.util.List;
 
 public class FootballerProfile implements IFootballerProfile {
-    public static final int CHARACTERISTICS_CNT = 24;
     private final String _name;
-    private final String _nationality;
+    private final Nationality _nationality;
     private String _club;
-    private List<Roles> _prefered_roles;
+    private List<Role> _prefered_roles;
     private short _number;
     private short _age;
     private int _transfer_cost;
-    private short[] _characteristics;
+    private BaseFootballerCharacteristics _characteristics;
 
-    public FootballerProfile(String name, String nationality, String club, List<Roles> prefered_roles, short number) {
+    public FootballerProfile(String name, Nationality nationality, String club, List<Role> prefered_roles, short number,
+    BaseFootballerCharacteristics characteristics) {
         _name = name;
         _nationality = nationality;
         _club = club;
         _prefered_roles = prefered_roles;
         _number = number;
-        _characteristics = new short[CHARACTERISTICS_CNT];
+        _characteristics = characteristics;
     }
 
     @Override
@@ -37,12 +39,12 @@ public class FootballerProfile implements IFootballerProfile {
     }
 
     @Override
-    public List<Roles> preferedRoles() {
+    public List<Role> preferedRoles() {
         return _prefered_roles;
     }
 
     @Override
-    public void addRole(Roles role) {
+    public void addRole(Role role) {
         _prefered_roles.add(role);
     }
 
@@ -67,18 +69,18 @@ public class FootballerProfile implements IFootballerProfile {
     }
 
     @Override
-    public short characteristic(FootballCharacteristics characteristic) {
-        return _characteristics[characteristic.array_pos];
+    public short characteristic(FootballerCharacteristicsEnum characteristic) {
+        return _characteristics.characteristic(characteristic);
     }
 
     @Override
-    public void increaseCharacteristci(FootballCharacteristics characteristic, short add) {
-        _characteristics[characteristic.array_pos] += add;
+    public void increaseCharacteristci(FootballerCharacteristicsEnum characteristic, short add) {
+        _characteristics.increaseCharacteristic(characteristic, add);
     }
 
     @Override
-    public void decreaseCharacteristci(FootballCharacteristics characteristic, short loss) {
-        _characteristics[characteristic.array_pos] -= loss;
+    public void decreaseCharacteristci(FootballerCharacteristicsEnum characteristic, short loss) {
+        _characteristics.decreaseCharacteristic(characteristic, loss);
     }
 
     @Override
@@ -107,7 +109,7 @@ public class FootballerProfile implements IFootballerProfile {
     }
 
     @Override
-    public String nationality() {
+    public Nationality nationality() {
         return _nationality;
     }
 }

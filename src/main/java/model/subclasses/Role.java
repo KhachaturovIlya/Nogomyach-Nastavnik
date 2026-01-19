@@ -1,6 +1,6 @@
 package model.subclasses;
 
-public enum Roles {
+public enum Role {
     GK("GK"),
     LB("LB"),
     LCB("LCB"),
@@ -19,7 +19,7 @@ public enum Roles {
 
     public final String description;
 
-    Roles(String description) {
+    Role(String description) {
         this.description = description;
     }
 }

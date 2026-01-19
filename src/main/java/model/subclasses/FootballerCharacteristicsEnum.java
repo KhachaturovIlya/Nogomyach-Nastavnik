@@ -1,6 +1,6 @@
 package model.subclasses;
 
-public enum FootballCharacteristics {
+public enum FootballerCharacteristicsEnum {
     WEIGHT(0, "weight"),
     HEIGHT(1, "height"),
 
@@ -36,7 +36,8 @@ public enum FootballCharacteristics {
 
     public final int array_pos;
     public final String string_version;
-    FootballCharacteristics(int pos, String stringVersion) {
+    public static final short cnt = 24;
+    FootballerCharacteristicsEnum(int pos, String stringVersion) {
         array_pos = pos;
         string_version = stringVersion;
     }
