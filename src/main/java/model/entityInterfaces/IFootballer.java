@@ -1,22 +1,20 @@
 package model.entityInterfaces;
 
-import model.components.IHasAge;
-import model.components.IHasSize;
-import model.components.IMovable;
-import model.components.INameable;
+import model.components.*;
+import model.subclasses.FootballCharacteristicsEnum;
 
-public interface IFootballer extends IMovable, INameable, IHasAge, IHasSize {
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
+public interface IFootballer extends IMovable, IHasName, IHasSize {
     // пусть будет просто как ни к чему не обязывающая подсказка игроку
     String role();
     void setRole(String role);
+    List<Roles> preferedRoles();
 
-    int number();
-    void setNumber();
+    short age();
 
-    int transferCost();
-    void setTransferCost(int cost);
+    short number();
 
-    int charasteristic(String characteristicName);
-    void upgradeCharacteristic(String characteristicName, int difference);
+    short charasteristic(FootballCharacteristicsEnum characteristic) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException;
 }

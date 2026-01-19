@@ -1,6 +1,6 @@
 package model.components;
 
 public interface IHasAge {
-    int age();
+    short age();
     void increaseAge();
 }
