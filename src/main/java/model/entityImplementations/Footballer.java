@@ -1,6 +1,6 @@
 package model.entityImplementations;
 
-import model.components.Roles;
+import model.subclasses.Roles;
 import model.entityInterfaces.IFootballer;
 import model.subclasses.FootballCharacteristics;
 import shared.Vector3;

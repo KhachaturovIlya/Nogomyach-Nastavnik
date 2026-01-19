@@ -2,6 +2,7 @@ package model.entityInterfaces;
 
 import model.components.*;
 import model.subclasses.FootballCharacteristics;
+import model.subclasses.Roles;
 
 import java.util.List;
 

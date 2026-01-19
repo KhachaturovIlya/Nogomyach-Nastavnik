@@ -1,6 +1,6 @@
 package model.entityImplementations;
 
-import model.components.Roles;
+import model.subclasses.Roles;
 import model.entityInterfaces.IFootballerProfile;
 import model.subclasses.FootballCharacteristics;
 

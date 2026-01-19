@@ -1,4 +1,4 @@
-package model.components;
+package model.subclasses;
 
 public enum Roles {
     GK("GK"),
@@ -17,9 +17,9 @@ public enum Roles {
     CF("CF"),
     RW("RW");
 
-    private final String _description;
+    public final String description;
 
     Roles(String description) {
-        _description = description;
+        this.description = description;
     }
 }
