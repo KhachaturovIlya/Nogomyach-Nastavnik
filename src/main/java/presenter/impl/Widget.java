@@ -11,6 +11,7 @@ public class Widget {
 
     final private int id;
     private boolean active;
+    private boolean button;
 
     final private Shape shape;
     final private Color shapeColor;
@@ -26,11 +27,12 @@ public class Widget {
     private final List<Runnable> clickActions;
     // Methods:
 
-    private Widget(int id, boolean active, Shape shape, Color shapeColor, String text,
+    public Widget(int id, boolean active, boolean button, Shape shape, Color shapeColor, String text,
         Color textColor, Vector2 normalizedPosition, Map<Integer, Widget> childrenLabels,
         Map<Integer, Widget> childrenButtons, List<Runnable> clickActions) {
         this.id = id;
         this.active = active;
+        this.button = button;
         this.shape = shape;
         this.shapeColor = shapeColor;
         this.text = text;
@@ -54,6 +56,7 @@ public class Widget {
     public Widget(Widget other) {
         this.id = other.id;
         this.active = other.active;
+        this.button = other.button;
         this.shape = other.shape;
         this.shapeColor = other.shapeColor;
         this.text = other.text;
@@ -64,15 +67,15 @@ public class Widget {
         this.clickActions = other.clickActions;
     }
 
-    public static Widget createButton(int id, boolean active, Shape shape, Color color, Vector2 position,
-        List<Runnable> clickActions) {
-        return new Widget(id, active, shape, color, "", color, position, null, null, clickActions);
+    public static Widget createButton(int id, boolean active, Shape shape,
+        Color color, Vector2 position, String text, Color textColor, List<Runnable> clickActions) {
+        return new Widget(id, active, true, shape, color, text, textColor, position, null, null, clickActions);
     }
 
     public static Widget createLabel(int id, boolean active, Shape shape, Color shapeColor,
         String text, Color textColor, Vector2 position, Map<Integer, Widget> childrenLabels,
             Map<Integer, Widget> childrenButtons, List<Runnable> clickActions) {
-        return new Widget(id, active, shape, shapeColor, text, textColor, position, childrenLabels, childrenButtons, null);
+        return new Widget(id, active, false, shape, shapeColor, text, textColor, position, childrenLabels, childrenButtons, null);
     }
 
     public void setText(String text) {
@@ -117,7 +120,23 @@ public class Widget {
         return textColor;
     }
 
+    public boolean isButton() {
+        return button;
+    }
+
     public Vector2 getNormalizedPosition() {
         return normalizedPosition;
+    }
+
+    public Map<Integer, Widget> getChildrenLabels() {
+        return childrenLabels;
+    }
+
+    public Map<Integer, Widget> getChildrenButtons() {
+        return childrenButtons;
+    }
+
+    public List<Runnable> getClickActions() {
+        return clickActions;
     }
 }

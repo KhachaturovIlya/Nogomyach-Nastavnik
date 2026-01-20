@@ -6,8 +6,9 @@ import presenter.impl.Widget;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 public interface IWidgetFileFactory {
-    public List<Widget> constructButtons(Path configPath, CommandLibrary commandLibrary) throws IOException;
-    public List<Widget> constructLabels(Path configPath) throws IOException;
+    Map<Integer, Widget> constructButtons(Path configPath, CommandLibrary commandLibrary) throws IOException;
+    Map<Integer, Widget> constructLabels(Path configPath, CommandLibrary commandLibrary) throws IOException;
 }

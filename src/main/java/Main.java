@@ -10,7 +10,9 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -24,16 +26,11 @@ public class Main {
 
         IWidgetFileFactory widgetFactory = new JsonWidgetFactory(path);
 
-        List<Widget> labels = new ArrayList<>();
-
-        labels = widgetFactory.constructLabels(
-            Path.of("configs/scenes/footballField/widgets/labels.json")
-        );
+        Map<Integer, Widget> labels = new HashMap<>();
 
         IPresenter presenter = new DefaultPresenter(
             new DefaultView(),
-            new ArrayList<>(),
-            labels);
+            widgetFactory);
 
         long lastTime = System.nanoTime();
 

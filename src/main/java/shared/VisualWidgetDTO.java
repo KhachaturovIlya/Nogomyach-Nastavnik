@@ -5,5 +5,6 @@ public record VisualWidgetDTO(
     Color shapeColor,
     String text,
     Color textColor,
-    Vector2 position
+    Vector2 position,
+    boolean button
 ) {}

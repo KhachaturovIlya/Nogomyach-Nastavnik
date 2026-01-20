@@ -1,15 +1,14 @@
 package view.impl;
 
-import shared.ActionWidgetDTO;
-import shared.UserInterfaceDTO;
-import shared.VisualWidgetDTO;
+import shared.*;
 import shared.Shape;
-import shared.WorldDTO;
 import view.Action;
 import view.IView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Color;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -22,6 +21,11 @@ public class DefaultView implements IView {
     private WorldDTO worldDTO;
 
     private final Queue<Action> actionBuffer = new java.util.concurrent.ConcurrentLinkedQueue<>();
+    private final Queue<Vector2> mouseClickBuffer = new java.util.concurrent.ConcurrentLinkedQueue<>();
+
+    InputHandler inputHandler;
+
+    private final List<List<Integer>> interactedWidgets = new ArrayList<>();
 
     private void DrawWorldDTO(Graphics2D graphics) {
 
@@ -32,6 +36,8 @@ public class DefaultView implements IView {
 
         if (userInterfaceDTO.widgetDTOS() == null || userInterfaceDTO.widgetDTOS().isEmpty()) return;
 
+        Vector2 rawPos = inputHandler.getMousePos();
+
         for (VisualWidgetDTO widgetDTO : userInterfaceDTO.widgetDTOS()) {
             int x = (int) (widgetDTO.position().x * canvas.getWidth());
             int y = (int) (widgetDTO.position().y * canvas.getHeight());
@@ -39,7 +45,13 @@ public class DefaultView implements IView {
             double w = canvas.getWidth();
             double h = canvas.getHeight();
 
-            graphics.setColor(new Color(widgetDTO.shapeColor().getFullColor(), true));
+            Vector2 mousePos = new Vector2(rawPos.x / w, rawPos.y / h);
+
+            if (widgetDTO.button() && widgetDTO.shape().contains(mousePos.x - x / w, mousePos.y - y / h)) {
+                graphics.setColor((new Color(widgetDTO.shapeColor().getFullColor(), true)).darker());
+            } else {
+                graphics.setColor(new Color(widgetDTO.shapeColor().getFullColor(), true));
+            }
 
             Shape shape = widgetDTO.shape();
             switch (shape) {
@@ -61,7 +73,11 @@ public class DefaultView implements IView {
             }
 
             if (widgetDTO.text() != null) {
-                graphics.setColor(new Color(widgetDTO.textColor().getFullColor(), true));
+                if (widgetDTO.button() && widgetDTO.shape().contains(mousePos.x - x / w, mousePos.y - y / h)) {
+                    graphics.setColor((new Color(widgetDTO.textColor().getFullColor(), true)).darker());
+                } else {
+                    graphics.setColor(new Color(widgetDTO.textColor().getFullColor(), true));
+                }
 
                 FontMetrics metrics = graphics.getFontMetrics(graphics.getFont());
 
@@ -90,17 +106,18 @@ public class DefaultView implements IView {
         frame.add(canvas);
         frame.setVisible(true);
 
-        InputHandler inputHandler = new InputHandler(this.actionBuffer, this.canvas);
+        inputHandler = new InputHandler(this.actionBuffer, this.mouseClickBuffer, this.canvas);
 
         frame.addKeyListener(inputHandler);
         canvas.addMouseListener(inputHandler);
+        canvas.addMouseMotionListener(inputHandler);
 
         frame.setFocusable(true);
         frame.requestFocus();
     }
 
     public DefaultView() {
-        this.frame = new JFrame("Noga Mach Manager");
+        this.frame = new JFrame("Nogamach-Nastavnik");
         this.canvas = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -125,13 +142,37 @@ public class DefaultView implements IView {
     @Override
     public List<Action> getActions(List<ActionWidgetDTO> actionWidgetDTOs) {
         List<Action> result = new ArrayList<>();
+        interactedWidgets.clear();
 
         Action action;
         while ((action = actionBuffer.poll()) != null) {
             result.add(action);
         }
 
+        Vector2 mouseClick;
+        while ((mouseClick = mouseClickBuffer.poll()) != null) {
+            for (int i = actionWidgetDTOs.size() - 1; i >= 0; i--) {
+                if (isPointInsideDTO(mouseClick.x, mouseClick.y, actionWidgetDTOs.get(i))) {
+                    interactedWidgets.add(actionWidgetDTOs.get(i).ids());
+                    break;
+                }
+            }
+        }
+
         return result;
+    }
+
+    @Override
+    public List<List<Integer>> getInteractedWidgets() {
+        return interactedWidgets;
+    }
+
+    private boolean isPointInsideDTO(double x, double y, ActionWidgetDTO actionWidgetDTO) {
+        double normX = x / canvas.getWidth();
+        double normY = y / canvas.getHeight();
+
+        return actionWidgetDTO.shape().contains(normX - actionWidgetDTO.position().x,
+            normY - actionWidgetDTO.position().y);
     }
 
     @Override

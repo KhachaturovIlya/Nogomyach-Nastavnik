@@ -48,7 +48,7 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
         this.mapper.addMixIn(Vector2.class, Vector2Mixin.class);
     }
 
-    private List<Widget> construct(Path configPath, BiFunction<WidgetConfig, CommandLibrary, Widget> assembler,
+    private Map<Integer, Widget> construct(Path configPath, BiFunction<WidgetConfig, CommandLibrary, Widget> assembler,
         CommandLibrary commandLibrary) throws IOException {
         try {
             List<WidgetConfig> dtos = mapper.readValue(
@@ -56,9 +56,15 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
                 new TypeReference<List<WidgetConfig>>() {}
             );
 
-            return dtos.stream().
+            List<Widget> widgets =  dtos.stream().
                 map(dto -> assembler.apply(dto, commandLibrary)).
                 toList();
+
+            Map<Integer, Widget> mappedWidgets = new HashMap<>();
+            for (Widget widget : widgets) {
+                mappedWidgets.put(widget.getId(), widget);
+            }
+            return mappedWidgets;
         } catch (IOException exception) {
             System.err.println("Could not read config file: " + exception.getMessage());
             throw new IOException(exception);
@@ -71,14 +77,18 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
             widgetConfig.active(),
             widgetConfig.shape(),
             widgetConfig.shapeColor(),
+
             widgetConfig.position(),
+
+            widgetConfig.text(),
+            widgetConfig.textColor(),
             
             commandLibrary.getCommand(widgetConfig.actionName())
         );
     }
 
     @Override
-    public List<Widget> constructButtons(Path configPath, CommandLibrary commandLibrary) throws IOException {
+    public Map<Integer, Widget> constructButtons(Path configPath, CommandLibrary commandLibrary) throws IOException {
         return construct(configPath, this::assembleButton, commandLibrary);
     }
 
@@ -129,7 +139,7 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
     }
 
     @Override
-    public List<Widget> constructLabels(Path configPath) throws IOException {
-        return construct(configPath, this::assembleLabel, null);
+    public Map<Integer, Widget> constructLabels(Path configPath, CommandLibrary commandLibrary) throws IOException {
+        return construct(configPath, this::assembleLabel, commandLibrary);
     }
 }

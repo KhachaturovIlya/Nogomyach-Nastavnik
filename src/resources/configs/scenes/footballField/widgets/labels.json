@@ -12,12 +12,14 @@
         "shape": { "type": "rectangle", "width": 0.9, "height": 0.3 },
         "shapeColor": { "red": 60, "green": 60, "blue": 60, "alpha": 255 },
         "text": "USER_INFO_PANEL",
+        "textColor" : { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
         "position": { "x": 0.05, "y": 0.05 },
-        "subLabels": [
+        "subButtons": [
           {
             "active" : true,
             "shape": { "type": "rectangle", "width": 0.8, "height": 0.2 },
             "shapeColor": { "red": 200, "green": 50, "blue": 50, "alpha": 255 },
+            "textColor" : { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
             "text": "LEAVE GAME",
             "position": { "x": 0.1, "y": 0.7 },
             "actionName": "EXIT"
