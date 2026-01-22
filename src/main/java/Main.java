@@ -1,15 +1,12 @@
 import presenter.IPresenter;
 import presenter.impl.DefaultPresenter;
 import presenter.impl.JsonWidgetFactory;
-import presenter.impl.Widget;
 import presenter.impl.interfaces.IWidgetFileFactory;
+import presenter.impl.widget.Widget;
 import view.impl.DefaultView;
 
-import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +23,13 @@ public class Main {
 
         IWidgetFileFactory widgetFactory = new JsonWidgetFactory(path);
 
-        Map<Integer, Widget> labels = new HashMap<>();
+        Map<Integer, Widget> widgets = widgetFactory.construct(
+            Path.of("configs/scenes/footballField/widgets/labels")
+        );
 
         IPresenter presenter = new DefaultPresenter(
             new DefaultView(),
-            widgetFactory);
+            widgets);
 
         long lastTime = System.nanoTime();
 

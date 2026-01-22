@@ -33,8 +33,6 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             actions.add(new Action.Quit());
         }
-
-        System.out.println("DEBUG: Actions size: " + actions.size());
     }
 
     @Override

@@ -2,6 +2,9 @@ package presenter.impl;
 
 import presenter.IPresenter;
 import presenter.impl.interfaces.IWidgetFileFactory;
+import presenter.impl.widget.Button;
+import presenter.impl.widget.Container;
+import presenter.impl.widget.Widget;
 import shared.ActionWidgetDTO;
 import shared.UserInterfaceDTO;
 import shared.Vector2;
@@ -9,7 +12,6 @@ import shared.VisualWidgetDTO;
 import view.Action;
 import view.IView;
 
-import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,116 +25,95 @@ public class DefaultPresenter implements IPresenter {
     private boolean cycleState = true;
 
     private final IView view;
-    private final Map<Integer, Widget> buttons;
-    private final Map<Integer, Widget> labels;
+    private final Map<Integer, Widget> widgets;
 
     private final CommandLibrary commandLibrary = new CommandLibrary();
 
     // Private DTO methods:
 
-    private static Widget compressWidgetByParent(Widget widget, Widget parentWidget) {
-        return new Widget(
-            widget.getId(),
-            widget.isActive(),
-            widget.isButton(),
-            widget.getShape().compressedCopy(parentWidget.getShape().getWidth(), parentWidget.getShape().getHeight()),
-            widget.getShapeColor(),
-            widget.getText(),
-            widget.getTextColor(),
-            new Vector2(parentWidget.getNormalizedPosition().x + widget.getNormalizedPosition().x * parentWidget.getShape().getWidth(),
-                parentWidget.getNormalizedPosition().y + widget.getNormalizedPosition().y * parentWidget.getShape().getHeight()),
-
-            widget.getChildrenLabels(),
-            widget.getChildrenButtons(),
-
-            widget.getClickActions()
-        );
-    }
-
-    private static VisualWidgetDTO transferToVisualWidgetDTO(Widget widget) {
+    private static VisualWidgetDTO toVisualDtoFlatten(Widget widget, Vector2 globalNormalizedPosition,
+                                               double parentWidth, double parentHeight) {
         return new VisualWidgetDTO(
-            widget.getShape(),
+            widget.getShape().compressedCopy(parentWidth, parentHeight),
             widget.getShapeColor(),
             widget.getText(),
             widget.getTextColor(),
-            widget.getNormalizedPosition(),
-            widget.isButton()
+            globalNormalizedPosition,
+            widget instanceof Button
         );
     }
 
-    private void prepareVisualDTORecursive(Widget widget, List<VisualWidgetDTO> visualWidgetDTOs) {
-        for (Widget childrenLabel : widget.getChildrenLabels().values()) {
-            Widget compressWidget = compressWidgetByParent(childrenLabel, widget);
-            visualWidgetDTOs.add(transferToVisualWidgetDTO(compressWidget));
-            if (!childrenLabel.getChildrenLabels().isEmpty() || !childrenLabel.getChildrenButtons().isEmpty()) {
-                prepareVisualDTORecursive(compressWidget, visualWidgetDTOs);
+    private void flattenContainerToVisualDto(Map<Integer, Widget> widgets, List<VisualWidgetDTO> visualWidgetDTOs,
+                             Vector2 parentNormalizedPosition, double parentWidth, double parentHeight) {
+        for (Widget widget : widgets.values()) {
+            Vector2 widgetGlobalNormalizedPosition = new Vector2(parentNormalizedPosition.x + widget.getNormalizedPosition().x * parentWidth,
+                parentNormalizedPosition.y + widget.getNormalizedPosition().y * parentHeight);
+
+            double widgetGlobalWidth = parentWidth * widget.getShape().getWidth();
+            double widgetGlobalHeight = parentHeight * widget.getShape().getHeight();
+
+            visualWidgetDTOs.add(toVisualDtoFlatten(widget, widgetGlobalNormalizedPosition,
+                parentWidth, parentHeight));
+            if (widget instanceof Container container) {
+                flattenContainerToVisualDto(container.getChildren(), visualWidgetDTOs,
+                    widgetGlobalNormalizedPosition, widgetGlobalWidth, widgetGlobalHeight);
             }
-        }
-        for (Widget childrenButton : widget.getChildrenButtons().values()) {
-            visualWidgetDTOs.add(transferToVisualWidgetDTO(compressWidgetByParent(childrenButton, widget)));
         }
     }
 
     private List<VisualWidgetDTO> prepareVisualDTO() {
-        List<VisualWidgetDTO> DTOs = new ArrayList<>();
-        for (Widget widget : labels.values()) {
-            if (!widget.isActive()) continue;
-            DTOs.add(transferToVisualWidgetDTO(widget));
-            if (!widget.getChildrenLabels().isEmpty() || !widget.getChildrenButtons().isEmpty()) {
-                prepareVisualDTORecursive(widget, DTOs);
+        List<VisualWidgetDTO> visualWidgetDTOS = new ArrayList<>();
+
+        for (Widget root : widgets.values()) {
+            if (root.isActive()) {
+                visualWidgetDTOS.add(toVisualDtoFlatten(root, root.getNormalizedPosition(), 1, 1));
+                if (root instanceof Container container) {
+                    flattenContainerToVisualDto(container.getChildren(), visualWidgetDTOS, container.getNormalizedPosition(),
+                        container.getShape().getWidth(), container.getShape().getHeight());
+                }
             }
         }
 
-        for (Widget widget : buttons.values()) {
-            if (!widget.isActive()) continue;
-            DTOs.add(transferToVisualWidgetDTO(widget));
-        }
-
-        return DTOs;
+        return visualWidgetDTOS;
     }
 
-    private static ActionWidgetDTO transferToActionWidgetDTO(List<Integer> ids, Widget widget) {
-        List<Integer> recursiveID = new ArrayList<>(ids);
-        recursiveID.add(widget.getId());
+    private static ActionWidgetDTO toActionDtoFlatten(List<Integer> ids, Widget widget, Vector2 globalNormalizedPosition,
+                                                      double parentWidth, double parentHeight) {
         return new ActionWidgetDTO(
-            recursiveID,
-            widget.getShape(),
-            widget.getNormalizedPosition()
+            ids,
+            widget.getShape().compressedCopy(parentWidth, parentHeight),
+            globalNormalizedPosition
         );
     }
 
-    private void prepareActionDTORecursive(List<Integer> ids, Widget widget, List<ActionWidgetDTO> actionWidgetDTOs) {
-        for (Widget childrenLabel : widget.getChildrenLabels().values()) {
-            if (!childrenLabel.getChildrenLabels().isEmpty() || !childrenLabel.getChildrenButtons().isEmpty()) {
-                List<Integer> recursiveID = new ArrayList<>(ids);
-                recursiveID.add(childrenLabel.getId());
-                Widget compressWidget = compressWidgetByParent(childrenLabel, widget);
-                prepareActionDTORecursive(recursiveID, compressWidget, actionWidgetDTOs);
+    private void flattenContainerToActionDTO(List<Integer> ids, Map<Integer, Widget> widgets, List<ActionWidgetDTO> actionWidgetDTOs,
+                                             Vector2 parentNormalizedPosition, double parentWidth, double parentHeight) {
+        for (Widget widget : widgets.values()) {
+            List<Integer> recursiveID = new ArrayList<>(ids);
+            recursiveID.add(widget.getId());
+
+            Vector2 widgetGlobalNormalizedPosition = new Vector2(parentNormalizedPosition.x + widget.getNormalizedPosition().x * parentWidth,
+                parentNormalizedPosition.y + widget.getNormalizedPosition().y * parentHeight);
+
+            double widgetGlobalWidth = parentWidth * widget.getShape().getWidth();
+            double widgetGlobalHeight = parentHeight * widget.getShape().getHeight();
+
+            actionWidgetDTOs.add(toActionDtoFlatten(recursiveID, widget, widgetGlobalNormalizedPosition,
+                parentWidth, parentHeight));
+            if (widget instanceof Container container) {
+                flattenContainerToActionDTO(recursiveID, container.getChildren(), actionWidgetDTOs,
+                    widgetGlobalNormalizedPosition, widgetGlobalWidth, widgetGlobalHeight);
             }
-        }
-        for (Widget childrenButton : widget.getChildrenButtons().values()) {
-            actionWidgetDTOs.add(transferToActionWidgetDTO(ids, compressWidgetByParent(childrenButton, widget)));
         }
     }
 
     private List<ActionWidgetDTO> prepareActionDTO() {
-        List<ActionWidgetDTO> DTOs = new ArrayList<>();
+        List<ActionWidgetDTO> actionWidgetDTOs = new ArrayList<>();
 
-        for (Widget widget : buttons.values()) {
-            if (!widget.isActive()) continue;
-            List<Integer> ids = new ArrayList<>();
-            ids.add(widget.getId());
-            DTOs.add(transferToActionWidgetDTO(ids, widget));
-        }
+        flattenContainerToActionDTO(new ArrayList<>(), this.widgets, actionWidgetDTOs,
+            new Vector2(0, 0), 1.0, 1.0);
 
-        for (Widget widget : labels.values()) {
-            if (!widget.isActive()) continue;
-            List<Integer> ids = new ArrayList<>();
-            ids.add(widget.getId());
-            prepareActionDTORecursive(ids, widget, DTOs);
-        }
-
-        return DTOs;
+        return actionWidgetDTOs;
     }
 
     private void shutdown() {
@@ -149,28 +130,28 @@ public class DefaultPresenter implements IPresenter {
     }
 
     private void loadCommands() {
-        commandLibrary.registerCommand("EXIT", List.of(
+        commandLibrary.registerCommand("EXIT",
             this::shutdown
-        ));
+        );
     }
 
     private void handleButtonClick(List<Integer> ids) {
         if (ids == null || ids.isEmpty()) return;
 
-        Widget current;
-        Integer rootId = ids.getFirst();
-        current = buttons.getOrDefault(rootId, labels.get(rootId));
+        Widget current = widgets.get(ids.getFirst());
+        if (current == null) throw new RuntimeException("No widget with id " + ids.getFirst());
 
-        for (Integer id : ids) {
-            if (id.equals(rootId)) continue;
-
-            if (current == null) return;
-
-            current = current.getChildrenButtons().getOrDefault(id,
-                current.getChildrenLabels().get(id));
+        if (current instanceof Container container) {
+            current = container.findChild(ids);
+        } else if (ids.size() > 1) {
+            throw new RuntimeException("Tried to call children not in container class!");
         }
 
-        if (current != null) current.executeClick();
+        if (current instanceof Button button) {
+            for (String command : button.getClickActions()) {
+                commandLibrary.getCommand(command).run();
+            }
+        }
     }
 
     private void processActions(List<Action> actions) {
@@ -189,23 +170,11 @@ public class DefaultPresenter implements IPresenter {
 
     // Public methods:
 
-    public DefaultPresenter(IView view, Map<Integer, Widget> buttons, Map<Integer, Widget> labels) {
+    public DefaultPresenter(IView view, Map<Integer, Widget> widgets) {
         this.view = view;
-        this.buttons = buttons != null ? buttons : new HashMap<>();
-        this.labels = labels != null ? labels : new HashMap<>();
+        this.widgets = widgets != null ? widgets : new HashMap<>();
 
         this.loadCommands();
-    }
-
-    public DefaultPresenter(IView view, IWidgetFileFactory widgetFileFactory) throws IOException {
-        this.view = view;
-        this.loadCommands();
-
-        this.buttons = new HashMap<>(); //widgetFileFactory.constructButtons();
-        this.labels = widgetFileFactory.constructLabels(
-            Path.of("configs/scenes/footballField/widgets/labels.json"),
-            commandLibrary
-        );
     }
 
     @Override

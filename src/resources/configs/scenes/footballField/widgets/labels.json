@@ -1,30 +1,136 @@
 [
   {
-    "active" : true,
-    "shape": { "type": "rectangle", "width": 0.2, "height": 0.9 },
-    "shapeColor": { "red": 200, "green": 200, "blue": 200, "alpha": 220 },
-    "text": "MAIN_SIDEBAR",
-    "textColor" : { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
-    "position": { "x": 0.02, "y": 0.05 },
-    "subLabels": [
+    "type": "container",
+    "active": true,
+    "shape": { "type": "rectangle", "width": 0.6, "height": 0.4 },
+    "shapeColor": { "red": 25, "green": 30, "blue": 45, "alpha": 200 },
+    "text": "",
+    "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 20 },
+    "normalizedPosition": { "x": 0.3, "y": 0.25 },
+    "children": [
       {
-        "active" : true,
-        "shape": { "type": "rectangle", "width": 0.9, "height": 0.3 },
-        "shapeColor": { "red": 60, "green": 60, "blue": 60, "alpha": 255 },
-        "text": "USER_INFO_PANEL",
-        "textColor" : { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
-        "position": { "x": 0.05, "y": 0.05 },
-        "subButtons": [
-          {
-            "active" : true,
-            "shape": { "type": "rectangle", "width": 0.8, "height": 0.2 },
-            "shapeColor": { "red": 200, "green": 50, "blue": 50, "alpha": 255 },
-            "textColor" : { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
-            "text": "LEAVE GAME",
-            "position": { "x": 0.1, "y": 0.7 },
-            "actionName": "EXIT"
-          }
-        ]
+        "type": "button",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.4, "height": 0.15 },
+        "shapeColor": { "red": 60, "green": 70, "blue": 90, "alpha": 255 },
+        "text": "TACTICS",
+        "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+        "normalizedPosition": { "x": 0.3, "y": 0.75 },
+        "clickActions": ["OPEN_TACTICS"]
+      },
+      {
+        "type": "label",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 1.0, "height": 0.15 },
+        "shapeColor": { "red": 0, "green": 120, "blue": 255, "alpha": 255 },
+        "text": "UPCOMING MATCH",
+        "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+        "normalizedPosition": { "x": 0.0, "y": 0.0 }
+      },
+      {
+        "type": "label",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.4, "height": 0.3 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+        "text": "HOME",
+        "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+        "normalizedPosition": { "x": 0.05, "y": 0.35 }
+      },
+      {
+        "type": "label",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.1, "height": 0.3 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+        "text": "VS",
+        "textColor": { "red": 100, "green": 100, "blue": 120, "alpha": 255 },
+        "normalizedPosition": { "x": 0.45, "y": 0.35 }
+      },
+      {
+        "type": "label",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.4, "height": 0.3 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+        "text": "AWAY",
+        "textColor": { "red": 220, "green": 50, "blue": 50, "alpha": 255 },
+        "normalizedPosition": { "x": 0.55, "y": 0.35 }
+      }
+    ]
+  },
+  {
+    "type": "container",
+    "active": true,
+    "shape": { "type": "rectangle", "width": 0.22, "height": 1.0 },
+    "shapeColor": { "red": 18, "green": 22, "blue": 30, "alpha": 255 },
+    "text": "SIDEBAR",
+    "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 20 },
+    "normalizedPosition": { "x": 0.0, "y": 0.0 },
+    "children": [
+      {
+        "type": "button",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.08 },
+        "shapeColor": { "red": 0, "green": 230, "blue": 118, "alpha": 255 },
+        "text": "PLAY NOW",
+        "textColor": { "red": 10, "green": 30, "blue": 10, "alpha": 255 },
+        "normalizedPosition": { "x": 0.05, "y": 0.02 },
+        "clickActions": ["QUICK_MATCH"]
+      },
+      {
+        "type": "label",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.03 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+        "text": "LEAGUE STANDINGS",
+        "textColor": { "red": 130, "green": 140, "blue": 160, "alpha": 255 },
+        "normalizedPosition": { "x": 0.05, "y": 0.25 }
+      },
+      {
+        "type": "label",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.04 },
+        "shapeColor": { "red": 255, "green": 255, "blue": 255, "alpha": 10 },
+        "text": "1. Man City - 45pt",
+        "textColor": { "red": 200, "green": 200, "blue": 200, "alpha": 255 },
+        "normalizedPosition": { "x": 0.05, "y": 0.30 }
+      },
+      {
+        "type": "label",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.04 },
+        "shapeColor": { "red": 0, "green": 230, "blue": 118, "alpha": 40 },
+        "text": "2. YOUR TEAM - 42pt",
+        "textColor": { "red": 0, "green": 230, "blue": 118, "alpha": 255 },
+        "normalizedPosition": { "x": 0.05, "y": 0.35 }
+      },
+      {
+        "type": "button",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.05 },
+        "shapeColor": { "red": 180, "green": 50, "blue": 50, "alpha": 255 },
+        "text": "QUIT",
+        "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+        "normalizedPosition": { "x": 0.05, "y": 0.92 },
+        "clickActions": ["EXIT"]
+      }
+    ]
+  },
+  {
+    "type": "container",
+    "active": true,
+    "shape": { "type": "rectangle", "width": 0.78, "height": 0.06 },
+    "shapeColor": { "red": 10, "green": 12, "blue": 18, "alpha": 230 },
+    "text": "TOP_BAR",
+    "textColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+    "normalizedPosition": { "x": 0.22, "y": 0.0 },
+    "children": [
+      {
+        "type": "label",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.25, "height": 0.6 },
+        "shapeColor": { "red": 255, "green": 215, "blue": 0, "alpha": 20 },
+        "text": "BUDGET: € 50,200,000",
+        "textColor": { "red": 255, "green": 215, "blue": 0, "alpha": 255 },
+        "normalizedPosition": { "x": 0.02, "y": 0.2 }
       }
     ]
   }
