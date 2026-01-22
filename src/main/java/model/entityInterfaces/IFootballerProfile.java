@@ -28,4 +28,14 @@ public interface IFootballerProfile extends IHasName, IHasAge, IClubMember, IHas
     void setInjury(short daysToHeal);
     short daysToHeal();
     void updateInjury();
+
+    double currentPhysicalForm();
+    void increasePhysicalForm(double add);
+    void decreasePhysicalForm(double loss);
+    void setPhysicalForm(double physicalForm);
+
+    double currentEmotionalState();
+    void increaseEmotionalState(double add);
+    void decreaseEmotionalState(double loss);
+    void setEmotionalState(double emotionalState);
 }

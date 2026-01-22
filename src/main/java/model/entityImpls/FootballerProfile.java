@@ -16,8 +16,14 @@ public class FootballerProfile implements IFootballerProfile {
     private short _number;
     private short _age;
     private int _transfer_cost;
+
     private boolean _injured = false;
     private short _daysToHeal;
+
+
+    private double _currentPhysicalForm = 1.0;
+    private double _currentEmotionalState = 1.0;
+
     private BaseFootballerCharacteristics _characteristics;
 
     public FootballerProfile(String name, Nationality nationality, String club, List<Role> prefered_roles, short number,
@@ -109,6 +115,46 @@ public class FootballerProfile implements IFootballerProfile {
     @Override
     public void updateInjury() {
         _daysToHeal -= 1;
+    }
+
+    @Override
+    public double currentPhysicalForm() {
+        return _currentPhysicalForm;
+    }
+
+    @Override
+    public void increasePhysicalForm(double add) {
+        _currentPhysicalForm += Math.min(1.0 - _currentPhysicalForm, add);
+    }
+
+    @Override
+    public void decreasePhysicalForm(double loss) {
+        _currentPhysicalForm -= Math.min(_currentPhysicalForm, loss);
+    }
+
+    @Override
+    public void setPhysicalForm(double physicalForm) {
+        _currentPhysicalForm = physicalForm;
+    }
+
+    @Override
+    public double currentEmotionalState() {
+        return _currentEmotionalState;
+    }
+
+    @Override
+    public void increaseEmotionalState(double add) {
+        _currentEmotionalState += Math.min(1.0 - _currentEmotionalState, add);
+    }
+
+    @Override
+    public void decreaseEmotionalState(double loss) {
+        _currentEmotionalState -= Math.min(_currentEmotionalState, loss);
+    }
+
+    @Override
+    public void setEmotionalState(double emotionalState) {
+        _currentEmotionalState = emotionalState;
     }
 
     @Override
