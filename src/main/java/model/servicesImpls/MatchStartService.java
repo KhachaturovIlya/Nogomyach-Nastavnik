@@ -1,60 +1,144 @@
 package model.servicesImpls;
 
 import model.entityInterfaces.IFootballerProfile;
+import model.entityInterfaces.IFormation;
 import model.entityInterfaces.IPlayingFootballer;
 import model.entityInterfaces.ITeam;
 import model.servicesInterfaces.IMatchStartService;
 import model.servicesInterfaces.IPlayingFootballerFactory;
 import model.subclasses.Role;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MatchStartService implements IMatchStartService {
     private static final short PLAYERS_ON_FIELD = 11;
     private static final short MAX_PLAYERS_ON_BENCH = 11;
     private static final short MIN_PLAYERS_ON_BENCH = 9;
-    private ITeam _teamX;
-    private ITeam _teamY;
-    private short _playersOnFieldX;
-    private short _playersOnFieldY;
-    private short _playersOnBenchX;
-    private short _playersOnBenchY;
-    private List<IPlayingFootballer> _startingXITeamX;
-    private List<IPlayingFootballer> _startingXITeamY;
-    private List<IPlayingFootballer> _bench;
+
+    private ITeam _team;
+
+    private short _playersOnField;
+    private short _playersOnBench;
+    private Map<Short, IPlayingFootballer> _startingXI;
+    private Map<Short, IPlayingFootballer> _bench;
+
+    private Optional<IFormation> _formation;
+    private List<Role> _freeRoles;
+    private List<Role> _occupiedRoles;
+
     private IPlayingFootballerFactory _factory;
 
+    private void permutatePlayers() {
+        _startingXI.values().forEach(player -> {
+            var roleOptional = _freeRoles.stream().filter(r -> r == player.role()).findAny();
+            if (!roleOptional.isEmpty()) {
+                _freeRoles.remove(roleOptional.get());
+                _occupiedRoles.add(roleOptional.get());
+            } else {
+                Role role = Collections.min(_freeRoles,
+                        Comparator.comparingInt(x -> Math.abs(x.pos - player.role().pos)));
+                player.setRole(role);
+                _freeRoles.remove(role);
+                _occupiedRoles.add(role);
+            }
+        });
+    }
 
-    public MatchStartService(ITeam teamX, ITeam teamY, IPlayingFootballerFactory factory) {
-        _teamX = teamX;
-        _teamY = teamY;
+
+
+    public MatchStartService(IPlayingFootballerFactory factory) {
         _factory = factory;
     }
 
+    public void setTeam(ITeam team) {
+        _team = team;
+    }
 
     @Override
-    public void addPlayerToStartingXI(IFootballerProfile player, Role role) {
-        Optional<IFootballerProfile> profileX = _teamX.findPlayerByNumber(player.number());
-        Optional<IFootballerProfile> profileY = _teamY.findPlayerByNumber(player.number());
+    public void addPlayerToStartingXI(short number, Role role) throws NoSuchElementException {
 
-        if (profileX.isEmpty() && profileY.isEmpty()) {
-            // throw
-        }
 
-        IPlayingFootballer footballer = _factory.produce(player, role);
+        if (_playersOnField < PLAYERS_ON_FIELD) {
 
-        if (_playersOnFieldX < PLAYERS_ON_FIELD && profileX.get().name().equals(player.name())) {
-            _startingXITeamX.add(footballer);
-            _playersOnFieldX += 1;
-        } else if (_playersOnFieldY < PLAYERS_ON_FIELD && profileY.get().name().equals(player.name())) {
-            _startingXITeamY.add(footballer);
-            _playersOnFieldY += 1;
+            Optional<IFootballerProfile> profile = _team.findPlayerByNumber(number);
+
+            if (profile.isEmpty()) {
+                throw new NoSuchElementException(
+                        "no footballer with " + number + "number in team \"" + _team.name() + "\""
+                );
+            }
+
+            var player = _factory.produce(profile.get(), role);
+            _startingXI.put(number, player);
+            _playersOnField += 1;
         }
     }
 
     @Override
-    public void addPlayerOnBench(IFootballerProfile player) {
+    public void addPlayerOnBench(short number) throws NoSuchElementException {
+        if (_playersOnBench < MAX_PLAYERS_ON_BENCH) {
+            Optional<IFootballerProfile> profile = _team.findPlayerByNumber(number);
 
+            if (profile.isEmpty()) {
+                throw new NoSuchElementException(
+                        "no footballer with " + number + "number in team \"" + _team.name() + "\""
+                );
+            }
+
+            var player = _factory.produce(profile.get());
+            _bench.put(number, player);
+            _playersOnBench += 1;
+        }
+    }
+
+    @Override
+    public void replacePlayerInStartingXI(short numberOld, short numberNew) throws NoSuchElementException {
+        Optional<IFootballerProfile> profile = _team.findPlayerByNumber(numberNew);
+
+        if (profile.isEmpty()) {
+            throw new NoSuchElementException(
+                    "no footballer with " + numberNew + "number in team \"" + _team.name() + "\""
+            );
+        }
+
+        var player = _factory.produce(profile.get());
+        _startingXI.remove(numberOld);
+        _startingXI.put(numberNew, player);
+    }
+
+    @Override
+    public void replacePlayerOnBench(short numberOld, short numberNew) throws NoSuchElementException {
+        Optional<IFootballerProfile> profile = _team.findPlayerByNumber(numberNew);
+
+        if (profile.isEmpty()) {
+            throw new NoSuchElementException(
+                    "no footballer with " + numberNew + "number in team \"" + _team.name() + "\""
+            );
+        }
+
+        var player = _factory.produce(profile.get());
+        _bench.remove(numberOld);
+        _bench.put(numberNew, player);
+    }
+
+    @Override
+    public void swapPlayersInStartingXI(short numberX, short numberY) {
+        Role roleX = _startingXI.get(numberX).role();
+        Role roleY = _startingXI.get(numberY).role();
+        _startingXI.get(numberX).setRole(roleY);
+        _startingXI.get(numberY).setRole(roleX);
+    }
+
+    @Override
+    public void setFormation(IFormation formation) {
+        _formation = Optional.of(formation);
+        _occupiedRoles.forEach(role -> _freeRoles.add(role));
+        _occupiedRoles.clear();
+        permutatePlayers();
+    }
+
+    @Override
+    public boolean isFormationSet() {
+        return !_formation.isEmpty();
     }
 }
