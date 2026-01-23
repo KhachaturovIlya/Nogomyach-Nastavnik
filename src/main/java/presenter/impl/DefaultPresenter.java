@@ -1,9 +1,11 @@
 package presenter.impl;
 
+import presenter.ILangService;
 import presenter.IPresenter;
+import presenter.Scene;
+import presenter.impl.commands.ChangeSceneCmd;
 import presenter.impl.commands.QuitCmd;
 import presenter.impl.commands.ShiftWidgetStateCmd;
-import presenter.impl.interfaces.IWidgetFileFactory;
 import presenter.impl.widget.Button;
 import presenter.impl.widget.Container;
 import presenter.impl.widget.Widget;
@@ -14,10 +16,8 @@ import shared.VisualWidgetDTO;
 import view.Action;
 import view.IView;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,18 +27,21 @@ public class DefaultPresenter implements IPresenter {
     private boolean cycleState = true;
 
     private final IView view;
-    private final Map<Integer, Widget> widgets;
+
+    private final Map<String, Map<Integer, Widget>> scenes;
+    private Map<Integer, Widget> widgets = null;
 
     private final CommandLibrary commandLibrary = new CommandLibrary();
+    private final ILangService langService;
 
     // Private DTO methods:
 
-    private static VisualWidgetDTO toVisualDtoFlatten(Widget widget, Vector2 globalNormalizedPosition,
+    private VisualWidgetDTO toVisualDtoFlatten(Widget widget, Vector2 globalNormalizedPosition,
                                                double parentWidth, double parentHeight) {
         return new VisualWidgetDTO(
             widget.getShape().compressedCopy(parentWidth, parentHeight),
             widget.getShapeColor(),
-            widget.getName(),
+            langService.getText(widget.getTextId()),
             widget.getTextColor(),
             globalNormalizedPosition,
             widget instanceof Button
@@ -122,6 +125,11 @@ public class DefaultPresenter implements IPresenter {
         return widgets;
     }
 
+    public void loadNewScene(String sceneName) {
+        System.out.println("Loading Scene " + sceneName);
+        widgets = this.scenes.get(sceneName);
+    }
+
     public void shutdown() {
         System.out.println("Shutting down...");
 
@@ -151,6 +159,14 @@ public class DefaultPresenter implements IPresenter {
         } catch (Exception e) {
             System.err.println("Failed to load SHIFT_WIDGET_STATE!");
         }
+
+        try {
+            commandLibrary.registerCommand("LOAD_NEW_SCENE",
+                new ChangeSceneCmd(this)
+            );
+        } catch (Exception e) {
+            System.err.println("Failed to load LOAD_NEW_SCENE!");
+        }
     }
 
     public static Widget findWidgetByPath(Widget current, List<Integer> ids) {
@@ -174,7 +190,11 @@ public class DefaultPresenter implements IPresenter {
     private void handleWidgetAction(Widget widget) throws Exception {
         if (widget instanceof Button button) {
             for (String command : button.getClickActions()) {
-                commandLibrary.getCommand(command).execute(button.getActionContext());
+                try {
+                    commandLibrary.getCommand(command).execute(button.getActionContext());
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
             }
         }
     }
@@ -225,9 +245,27 @@ public class DefaultPresenter implements IPresenter {
 
     // Public methods:
 
-    public DefaultPresenter(IView view, Map<Integer, Widget> widgets) {
+    public DefaultPresenter(IView view, Map<String, Map<Integer, Widget>> scenes, ILangService langService) {
         this.view = view;
-        this.widgets = widgets != null ? widgets : new HashMap<>();
+
+        this.scenes = scenes;
+
+        this.widgets = scenes.get(Scene.MAIN_MENU.name());
+
+        this.langService = langService;
+
+        try {
+            this.langService.loadFile(Path.of("common/ru"));
+        } catch (Exception e) {
+            System.err.println("Failed to load common lang files: " + e);
+        }
+        for (Scene scene : Scene.values()) {
+            try {
+                this.langService.loadFile(Path.of("scenes/" + scene.name().toLowerCase() + "/ru"));
+            } catch (Exception e) {
+                System.err.println("Failed to load scene files: " + e);
+            }
+        }
 
         this.loadCommands();
     }

@@ -5,6 +5,7 @@
     "shape": { "type": "rectangle", "width": 0.6, "height": 0.4 },
     "shapeColor": { "red": 25, "green": 30, "blue": 45, "alpha": 200 },
     "name": "MAIN_MATCH_BAR",
+    "textId": "NO_TEXT",
     "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 20 },
     "normalizedPosition": { "x": 0.3, "y": 0.25 },
     "children": [
@@ -14,6 +15,7 @@
         "shape": { "type": "rectangle", "width": 0.4, "height": 0.15 },
         "shapeColor": { "red": 60, "green": 70, "blue": 90, "alpha": 255 },
         "name": "TACTICS",
+        "textId": "ui.main_menu.TACTICS",
         "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
         "normalizedPosition": { "x": 0.3, "y": 0.75 },
         "clickActions": ["OPEN_TACTICS"],
@@ -25,6 +27,7 @@
         "shape": { "type": "rectangle", "width": 1.0, "height": 0.15 },
         "shapeColor": { "red": 0, "green": 120, "blue": 255, "alpha": 255 },
         "name": "UPCOMING MATCH",
+        "textId": "ui.main_menu.UPCOMING_MATCH",
         "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
         "normalizedPosition": { "x": 0.0, "y": 0.0 }
       },
@@ -34,6 +37,7 @@
         "shape": { "type": "rectangle", "width": 0.4, "height": 0.3 },
         "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
         "name": "HOME",
+        "textId": "ui.main_menu.HOME",
         "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
         "normalizedPosition": { "x": 0.05, "y": 0.35 }
       },
@@ -43,6 +47,7 @@
         "shape": { "type": "rectangle", "width": 0.1, "height": 0.3 },
         "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
         "name": "VS",
+        "textId": "ui.main_menu.VS",
         "textColor": { "red": 100, "green": 100, "blue": 120, "alpha": 255 },
         "normalizedPosition": { "x": 0.45, "y": 0.35 }
       },
@@ -52,6 +57,7 @@
         "shape": { "type": "rectangle", "width": 0.4, "height": 0.3 },
         "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
         "name": "AWAY",
+        "textId": "ui.main_menu.AWAY",
         "textColor": { "red": 220, "green": 50, "blue": 50, "alpha": 255 },
         "normalizedPosition": { "x": 0.55, "y": 0.35 }
       }
@@ -63,6 +69,7 @@
     "shape": { "type": "rectangle", "width": 0.22, "height": 1.0 },
     "shapeColor": { "red": 18, "green": 22, "blue": 30, "alpha": 255 },
     "name": "SIDEBAR",
+    "textId": "NO_TEXT",
     "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 20 },
     "normalizedPosition": { "x": 0.0, "y": 0.0 },
     "children": [
@@ -72,8 +79,21 @@
         "shape": { "type": "rectangle", "width": 0.9, "height": 0.08 },
         "shapeColor": { "red": 0, "green": 230, "blue": 118, "alpha": 255 },
         "name": "PLAY NOW",
+        "textId": "ui.main_menu.PLAY_NOW",
         "textColor": { "red": 10, "green": 30, "blue": 10, "alpha": 255 },
         "normalizedPosition": { "x": 0.05, "y": 0.02 },
+        "clickActions": ["LOAD_NEW_SCENE"],
+        "actionsContext": ["GAME_FIELD"]
+      },
+      {
+        "type": "button",
+        "active": true,
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.08 },
+        "shapeColor": { "red": 0, "green": 45, "blue": 230, "alpha": 255 },
+        "name": "SHOW_MAIN_MATCH_BAR",
+        "textId": "ui.main_menu.SHOW_MAIN_MATCH_BAR",
+        "textColor": { "red": 10, "green": 30, "blue": 10, "alpha": 255 },
+        "normalizedPosition": { "x": 0.05, "y": 0.12 },
         "clickActions": ["SHIFT_WIDGET_STATE"],
         "actionsContext": ["MAIN_MATCH_BAR"]
       },
@@ -83,6 +103,7 @@
         "shape": { "type": "rectangle", "width": 0.9, "height": 0.03 },
         "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
         "name": "LEAGUE STANDINGS",
+        "textId": "ui.main_menu.LEAGUE_STANDINGS",
         "textColor": { "red": 130, "green": 140, "blue": 160, "alpha": 255 },
         "normalizedPosition": { "x": 0.05, "y": 0.25 }
       },
@@ -91,7 +112,8 @@
         "active": true,
         "shape": { "type": "rectangle", "width": 0.9, "height": 0.04 },
         "shapeColor": { "red": 255, "green": 255, "blue": 255, "alpha": 10 },
-        "name": "1. Man City - 45pt",
+        "name": "CITY_SCORE_LABEL",
+        "textId": "ui.main_menu.CITY_SCORE",
         "textColor": { "red": 200, "green": 200, "blue": 200, "alpha": 255 },
         "normalizedPosition": { "x": 0.05, "y": 0.30 }
       },
@@ -100,7 +122,8 @@
         "active": true,
         "shape": { "type": "rectangle", "width": 0.9, "height": 0.04 },
         "shapeColor": { "red": 0, "green": 230, "blue": 118, "alpha": 40 },
-        "name": "2. YOUR TEAM - 42pt",
+        "name": "PLAYER_SCORE_LABEL",
+        "textId": "ui.main_menu.PLAYER_SCORE",
         "textColor": { "red": 0, "green": 230, "blue": 118, "alpha": 255 },
         "normalizedPosition": { "x": 0.05, "y": 0.35 }
       },
@@ -109,7 +132,8 @@
         "active": true,
         "shape": { "type": "rectangle", "width": 0.9, "height": 0.05 },
         "shapeColor": { "red": 180, "green": 50, "blue": 50, "alpha": 255 },
-        "name": "QUIT",
+        "name": "QUIT_BUTTON",
+        "textId": "ui.main_menu.QUIT",
         "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
         "normalizedPosition": { "x": 0.05, "y": 0.92 },
         "clickActions": ["EXIT"],
@@ -123,6 +147,7 @@
     "shape": { "type": "rectangle", "width": 0.78, "height": 0.06 },
     "shapeColor": { "red": 10, "green": 12, "blue": 18, "alpha": 230 },
     "name": "TOP_BAR",
+    "textId": "NO_TEXT",
     "textColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
     "normalizedPosition": { "x": 0.22, "y": 0.0 },
     "children": [
@@ -131,7 +156,8 @@
         "active": true,
         "shape": { "type": "rectangle", "width": 0.25, "height": 0.6 },
         "shapeColor": { "red": 255, "green": 215, "blue": 0, "alpha": 20 },
-        "name": "BUDGET: € 50,200,000",
+        "name": "BUDGET_LABEL",
+        "textId": "ui.main_menu.BUDGET",
         "textColor": { "red": 255, "green": 215, "blue": 0, "alpha": 255 },
         "normalizedPosition": { "x": 0.02, "y": 0.2 }
       }

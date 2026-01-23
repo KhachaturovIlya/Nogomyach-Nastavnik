@@ -1,4 +1,7 @@
+import presenter.ILangService;
 import presenter.IPresenter;
+import presenter.impl.JsonLangService;
+import presenter.Scene;
 import presenter.impl.DefaultPresenter;
 import presenter.impl.JsonWidgetFactory;
 import presenter.impl.interfaces.IWidgetFileFactory;
@@ -8,7 +11,6 @@ import view.impl.DefaultView;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Main {
@@ -23,13 +25,19 @@ public class Main {
 
         IWidgetFileFactory widgetFactory = new JsonWidgetFactory(path);
 
-        Map<Integer, Widget> widgets = widgetFactory.construct(
-            Path.of("configs/scenes/footballField/widgets/labels")
-        );
+        Map<String, Map<Integer, Widget>> scenes = new HashMap<>();
+        for (Scene scene : Scene.values()) {
+            scenes.put(scene.name(), widgetFactory.construct(
+                Path.of("configs/scenes/" + scene.name().toLowerCase() + "/widgets")
+            ));
+        }
+
+        ILangService langService = new JsonLangService(Path.of(configsURL.toURI()));
 
         IPresenter presenter = new DefaultPresenter(
             new DefaultView(),
-            widgets);
+            scenes,
+            langService);
 
         long lastTime = System.nanoTime();
 

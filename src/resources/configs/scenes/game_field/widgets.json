@@ -1,0 +1,58 @@
+[
+  {
+    "type": "container",
+    "active": true,
+    "name": "PITCH_STADIUM",
+    "textId": "NO_TEXT",
+    "shape": { "type": "rectangle", "width": 1.0, "height": 1.0 },
+    "shapeColor": { "red": 34, "green": 139, "blue": 34, "alpha": 255 },
+    "textColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+    "normalizedPosition": { "x": 0.0, "y": 0.0 },
+    "children": [
+      {
+        "type": "container",
+        "active": true,
+        "name": "SCORE_BOARD",
+        "textId": "NO_TEXT",
+        "shape": { "type": "rectangle", "width": 0.3, "height": 0.08 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 180 },
+        "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+        "normalizedPosition": { "x": 0.35, "y": 0.02 },
+        "children": [
+          {
+            "type": "label",
+            "active": true,
+            "name": "TIMER_LABEL",
+            "textId": "ui.game_field.TIMER",
+            "shape": { "type": "rectangle", "width": 0.3, "height": 0.3 },
+            "shapeColor": { "red": 255, "green": 140, "blue": 0, "alpha": 100 },
+            "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+            "normalizedPosition": { "x": 0.35, "y": 0.0 }
+          },
+          {
+            "type": "label",
+            "active": true,
+            "name": "SCORE_LABEL",
+            "textId": "ui.game_field.SCORE",
+            "shape": { "type": "rectangle", "width": 1.0, "height": 0.5 },
+            "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+            "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+            "normalizedPosition": { "x": 0.0, "y": 0.4 }
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "active": true,
+        "name": "PAUSE_BUTTON",
+        "textId": "ui.game_field.PAUSE",
+        "shape": { "type": "rectangle", "width": 0.1, "height": 0.05 },
+        "shapeColor": { "red": 50, "green": 50, "blue": 50, "alpha": 200 },
+        "textColor": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+        "normalizedPosition": { "x": 0.88, "y": 0.02 },
+        "clickActions": ["LOAD_NEW_SCENE"],
+        "actionsContext": ["MAIN_MENU"]
+      }
+    ]
+  }
+]

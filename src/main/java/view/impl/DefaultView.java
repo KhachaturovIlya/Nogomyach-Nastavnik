@@ -70,6 +70,12 @@ public class DefaultView implements IView {
                 }
             }
 
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+
             if (widgetDTO.text() != null) {
                 if (widgetDTO.button() && widgetDTO.shape().contains(mousePos.x - x / w, mousePos.y - y / h)) {
                     graphics.setColor((new Color(widgetDTO.textColor().getFullColor(), true)).darker());
@@ -77,6 +83,7 @@ public class DefaultView implements IView {
                     graphics.setColor(new Color(widgetDTO.textColor().getFullColor(), true));
                 }
 
+                graphics.setFont(getOptimalFontSize(graphics, widgetDTO.text(), (int) w, (int) h));
                 FontMetrics metrics = graphics.getFontMetrics(graphics.getFont());
 
                 int textX = (int) (x + (w - metrics.stringWidth(widgetDTO.text())) / 2);
@@ -85,6 +92,22 @@ public class DefaultView implements IView {
                 graphics.drawString(widgetDTO.text(), textX, textY);
             }
         }
+    }
+
+    private Font getOptimalFontSize(Graphics2D graphics, String text, int maxWidth, int maxHeight) {
+        Font currentFont = graphics.getFont();
+        int fontSize = maxHeight;
+
+        while (fontSize > 5) {
+            Font scaledFont = currentFont.deriveFont((float) fontSize);
+            FontMetrics fm = graphics.getFontMetrics(scaledFont);
+
+            if (fm.stringWidth(text) < maxWidth * 0.7 && fm.getHeight() < maxHeight * 0.7) {
+                return scaledFont;
+            }
+            fontSize--;
+        }
+        return currentFont.deriveFont(5f);
     }
 
     private void reDraw(Graphics2D graphics) {

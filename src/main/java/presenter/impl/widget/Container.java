@@ -12,9 +12,9 @@ import java.util.Map;
 public final class Container extends Widget {
     Map<Integer, Widget> children;
 
-    public Container(boolean active, String name, Shape shape, Color shapeColor, Color textColor,
-              Vector2 normalizedPosition, List<Widget> children) {
-        super(active, name, shape, shapeColor, textColor, normalizedPosition);
+    public Container(boolean active, String name, Shape shape, Color shapeColor,
+                     String textId, Color textColor, Vector2 normalizedPosition, List<Widget> children) {
+        super(active, name, shape, shapeColor, textId, textColor, normalizedPosition);
 
         Map<Integer, Widget> map = new HashMap<>();
         for (Widget widget : children) {
