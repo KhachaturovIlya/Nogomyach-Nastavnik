@@ -2,6 +2,7 @@ package presenter.impl.widget;
 
 import shared.Color;
 import shared.Shape;
+import shared.TextType;
 import shared.Vector2;
 
 public sealed abstract class Widget permits Button, Label, Container {
@@ -16,11 +17,12 @@ public sealed abstract class Widget permits Button, Label, Container {
 
     final protected String textId;
     final protected Color textColor;
+    final protected TextType textType;
 
     final protected Vector2 normalizedPosition;
 
     public Widget(boolean active, String name, Shape shape, Color shapeColor,
-                  String textId, Color textColor, Vector2 normalizedPosition) {
+                  String textId, Color textColor, TextType textType, Vector2 normalizedPosition) {
         this.id = nextId++;
         this.name = name;
         this.active = active;
@@ -28,6 +30,7 @@ public sealed abstract class Widget permits Button, Label, Container {
         this.shapeColor = shapeColor;
         this.textId = textId;
         this.textColor = textColor;
+        this.textType = textType;
         this.normalizedPosition = normalizedPosition;
     }
 
@@ -57,6 +60,10 @@ public sealed abstract class Widget permits Button, Label, Container {
 
     public Color getTextColor() {
         return textColor;
+    }
+
+    public TextType getTextType() {
+        return textType;
     }
 
     public Vector2 getNormalizedPosition() {

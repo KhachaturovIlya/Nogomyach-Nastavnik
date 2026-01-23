@@ -2,6 +2,7 @@ package presenter.impl.widget;
 
 import shared.Color;
 import shared.Shape;
+import shared.TextType;
 import shared.Vector2;
 
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ public final class Container extends Widget {
     Map<Integer, Widget> children;
 
     public Container(boolean active, String name, Shape shape, Color shapeColor,
-                     String textId, Color textColor, Vector2 normalizedPosition, List<Widget> children) {
-        super(active, name, shape, shapeColor, textId, textColor, normalizedPosition);
+                     String textId, Color textColor, TextType textType, Vector2 normalizedPosition, List<Widget> children) {
+        super(active, name, shape, shapeColor, textId, textColor, textType, normalizedPosition);
 
         Map<Integer, Widget> map = new HashMap<>();
         for (Widget widget : children) {

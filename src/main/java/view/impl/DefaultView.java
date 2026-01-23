@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -23,7 +24,8 @@ public class DefaultView implements IView {
     private final Queue<Action> actionBuffer = new java.util.concurrent.ConcurrentLinkedQueue<>();
     private final Queue<Vector2> mouseClickBuffer = new java.util.concurrent.ConcurrentLinkedQueue<>();
 
-    InputHandler inputHandler;
+    private InputHandler inputHandler;
+    private final FontMapper fontMapper;
 
     private void DrawWorldDTO(Graphics2D graphics) {
 
@@ -83,7 +85,12 @@ public class DefaultView implements IView {
                     graphics.setColor(new Color(widgetDTO.textColor().getFullColor(), true));
                 }
 
+                Font font = fontMapper.getFont(widgetDTO.textType());
+                if (font.canDisplayUpTo(widgetDTO.text()) == -1) {
+                    graphics.setFont(font);
+                }
                 graphics.setFont(getOptimalFontSize(graphics, widgetDTO.text(), (int) w, (int) h));
+
                 FontMetrics metrics = graphics.getFontMetrics(graphics.getFont());
 
                 int textX = (int) (x + (w - metrics.stringWidth(widgetDTO.text())) / 2);
@@ -137,7 +144,7 @@ public class DefaultView implements IView {
         frame.requestFocus();
     }
 
-    public DefaultView() {
+    public DefaultView(Path resourcesPath) {
         this.frame = new JFrame("Nogamach-Nastavnik");
         this.canvas = new JPanel() {
             @Override
@@ -146,6 +153,8 @@ public class DefaultView implements IView {
                 reDraw((Graphics2D) g);
             }
         };
+
+        fontMapper = new FontMapper(resourcesPath.resolve("fonts"));
 
         initWindow();
     }

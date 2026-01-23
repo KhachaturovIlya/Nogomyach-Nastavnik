@@ -35,7 +35,7 @@ public class Main {
         ILangService langService = new JsonLangService(Path.of(configsURL.toURI()));
 
         IPresenter presenter = new DefaultPresenter(
-            new DefaultView(),
+            new DefaultView(path),
             scenes,
             langService);
 

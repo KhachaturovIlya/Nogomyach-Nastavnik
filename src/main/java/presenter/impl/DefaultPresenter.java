@@ -43,6 +43,7 @@ public class DefaultPresenter implements IPresenter {
             widget.getShapeColor(),
             langService.getText(widget.getTextId()),
             widget.getTextColor(),
+            widget.getTextType(),
             globalNormalizedPosition,
             widget instanceof Button
         );
