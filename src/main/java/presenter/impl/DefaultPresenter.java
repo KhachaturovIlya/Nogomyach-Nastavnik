@@ -160,6 +160,7 @@ public class DefaultPresenter implements IPresenter {
         }
 
         view.close();
+
         this.cycleState = false;
     }
 

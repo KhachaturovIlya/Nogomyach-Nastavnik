@@ -18,6 +18,9 @@ public class DefaultView implements IView {
     private final JFrame frame;
     private final JPanel canvas;
 
+    private final SoundPlayer soundPlayer;
+    private final MusicPlayer musicPlayer;
+
     private UserInterfaceDTO userInterfaceDTO;
     private WorldDTO worldDTO;
 
@@ -142,6 +145,8 @@ public class DefaultView implements IView {
 
         frame.setFocusable(true);
         frame.requestFocus();
+
+        musicPlayer.play("Push-Long-Version");
     }
 
     public DefaultView(Path resourcesPath) {
@@ -155,6 +160,8 @@ public class DefaultView implements IView {
         };
 
         fontMapper = new FontMapper(resourcesPath.resolve("fonts"));
+        soundPlayer = new SoundPlayer(resourcesPath.resolve("audio/effects"));
+        musicPlayer = new MusicPlayer(resourcesPath.resolve("audio/soundtracks"));
 
         initWindow();
     }
@@ -180,6 +187,7 @@ public class DefaultView implements IView {
 
         Vector2 mouseClick;
         while ((mouseClick = mouseClickBuffer.poll()) != null) {
+            soundPlayer.play("click");
             for (int i = actionWidgetDTOs.size() - 1; i >= 0; i--) {
                 if (isPointInsideDTO(mouseClick.x, mouseClick.y, actionWidgetDTOs.get(i))) {
                     result.add(new Action.WidgetClicked(actionWidgetDTOs.get(i).ids()));
@@ -206,6 +214,15 @@ public class DefaultView implements IView {
 
     @Override
     public void close() {
+        musicPlayer.stop();
+
+        try {
+            Thread.sleep(220);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
         frame.dispose();
+        soundPlayer.close();
     }
 }
