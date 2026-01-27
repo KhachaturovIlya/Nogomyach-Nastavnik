@@ -1,9 +1,6 @@
 package model.entityImpls;
 
-import model.entityInterfaces.ICoach;
-import model.entityInterfaces.IFootballerProfile;
-import model.entityInterfaces.IFormation;
-import model.entityInterfaces.ITeam;
+import model.entityInterfaces.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +8,7 @@ import java.util.Optional;
 public class Club implements ITeam {
     private String _name;
     private ICoach _headCoach;
-    private IFormation _defaultFormation;
+	private List<ISquad> _defaultSquads;
     private List<IFootballerProfile> _players;
     private int _transferBudget;
 
@@ -35,17 +32,17 @@ public class Club implements ITeam {
         _headCoach = coach;
     }
 
-    @Override
-    public void setDefaultFormation(IFormation formation) {
-        _defaultFormation = formation;
-    }
+	@Override
+	public List<ISquad> defaultSqauds() {
+		return _defaultSquads;
+	}
 
-    @Override
-    public IFormation defaultFormation() {
-        return _defaultFormation;
-    }
+	@Override
+	public void addDefaultSquad(ISquad squad) {
+		_defaultSquads.add(squad);
+	}
 
-    @Override
+	@Override
     public List<IFootballerProfile> allPlayers() {
         return _players;
     }
@@ -54,4 +51,16 @@ public class Club implements ITeam {
     public Optional<IFootballerProfile> findPlayerByNumber(short number) {
         return _players.stream().filter(p -> p.number() == number).findAny();
     }
+
+	public void increaseTransferBudget(int add) {
+		_transferBudget += add;
+	}
+
+	public void decreaseTransferBudget(int loss) {
+		_transferBudget -= loss;
+	}
+
+	public int transferBudget() {
+		return _transferBudget;
+	}
 }
