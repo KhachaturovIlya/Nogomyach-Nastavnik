@@ -26,6 +26,8 @@ public class DefaultPresenter implements IPresenter {
     private final CommandLibrary commandLibrary;
     private final ILangService langService;
 
+    private float volume = -10.f;
+
     // Private DTO methods:
 
     private VisualWidgetDTO toVisualDtoFlatten(Widget widget, Vector2 globalNormalizedPosition,
@@ -139,6 +141,14 @@ public class DefaultPresenter implements IPresenter {
             new Vector2(0, 0), 1.0, 1.0);
 
         return actionWidgetDTOs;
+    }
+
+    public float getVolume() {
+        return volume;
+    }
+
+    public void setVolume(float volume) {
+        this.volume = volume;
     }
 
     public Map<Integer, Widget> getWidgets() {
@@ -268,6 +278,8 @@ public class DefaultPresenter implements IPresenter {
 
     @Override
     public boolean run(double deltaTime) throws Exception {
+        view.setVolume(volume);
+
         UserInterfaceDTO uiDTO = new UserInterfaceDTO(prepareVisualDTO());
 
         view.renderUI(uiDTO);

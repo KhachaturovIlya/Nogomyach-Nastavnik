@@ -1,8 +1,6 @@
 package presenter.impl;
 
-import presenter.impl.commands.action_commands.ChangeSceneCmd;
-import presenter.impl.commands.action_commands.QuitCmd;
-import presenter.impl.commands.action_commands.ShiftWidgetStateCmd;
+import presenter.impl.commands.action_commands.*;
 import presenter.impl.commands.context_commands.TeamBudget;
 
 public class CommandFactory {
@@ -25,6 +23,14 @@ public class CommandFactory {
 
         commandLibrary.registerCommand("LOAD_NEW_SCENE",
             new ChangeSceneCmd(defaultPresenter)
+        );
+
+        commandLibrary.registerCommand("INCREASE_VOLUME",
+            new IncreaseVolume(defaultPresenter)
+        );
+
+        commandLibrary.registerCommand("DECREASE_VOLUME",
+            new DecreaseVolume(defaultPresenter)
         );
 
         commandLibrary.registerContextCommand("TEAM_BUDGET",

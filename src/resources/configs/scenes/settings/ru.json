@@ -1,0 +1,10 @@
+{
+  "ui.settings.TITLE": "НАСТРОЙКИ",
+  "ui.settings.MUSIC_VOLUME": "ГРОМКОСТЬ МУЗЫКИ",
+  "ui.settings.VOL_UP": "ГРОМЧЕ",
+  "ui.settings.VOL_DOWN": "ТИШЕ",
+  "ui.settings.FULLSCREEN": "ПОЛНЫЙ ЭКРАН (ВКЛ/ВЫКЛ)",
+  "ui.settings.CLOSE": "НАЗАД В МЕНЮ",
+  "ui.settings.LANGUAGE": "ЯЗЫК: РУССКИЙ",
+  "ui.settings.SOUND_EFFECTS": "ЗВУКОВЫЕ ЭФФЕКТЫ"
+}

@@ -178,6 +178,22 @@
       {
         "type": "button",
         "active": true,
+        "name": "SETTINGS_BUTTON",
+        "normalizedPosition": { "x": 0.05, "y": 0.85 },
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.05 },
+        "shapeColor": { "red": 80, "green": 85, "blue": 100, "alpha": 255 },
+        "textConfig": {
+          "id": "ui.main_menu.SETTINGS",
+          "type": "DEFAULT",
+          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+          "bindings": []
+        },
+        "clickActions": ["LOAD_NEW_SCENE"],
+        "actionsContext": ["SETTINGS"]
+      },
+      {
+        "type": "button",
+        "active": true,
         "name": "QUIT_BUTTON",
         "normalizedPosition": { "x": 0.05, "y": 0.92 },
         "shape": { "type": "rectangle", "width": 0.9, "height": 0.05 },

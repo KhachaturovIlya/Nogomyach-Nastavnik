@@ -11,6 +11,8 @@ public interface IView {
 
     void renderUI(UserInterfaceDTO userInterfaceDTO);
 
+    void setVolume(float volume);
+
     List<Action> getActions(List<ActionWidgetDTO> actionWidgetDTOs);
 
     void update();

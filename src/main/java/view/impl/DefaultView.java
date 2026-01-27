@@ -130,12 +130,18 @@ public class DefaultView implements IView {
     }
 
     private void initWindow() {
-        frame.setUndecorated(true);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setUndecorated(true);
 
         frame.add(canvas);
         frame.setVisible(true);
+
+        GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        if (device.isFullScreenSupported()) {
+            device.setFullScreenWindow(frame);
+        } else {
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
 
         inputHandler = new InputHandler(this.actionBuffer, this.mouseClickBuffer, this.canvas);
 
@@ -164,6 +170,12 @@ public class DefaultView implements IView {
         musicPlayer = new MusicPlayer(resourcesPath.resolve("audio/soundtracks"));
 
         initWindow();
+    }
+
+    @Override
+    public void setVolume(float volume) {
+        musicPlayer.setVolume(volume);
+        soundPlayer.setVolume(volume);
     }
 
     @Override
