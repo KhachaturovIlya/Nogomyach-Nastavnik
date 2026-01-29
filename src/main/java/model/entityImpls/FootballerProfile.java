@@ -1,37 +1,41 @@
 package model.entityImpls;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import model.subclasses.BaseFootballerCharacteristics;
 import model.subclasses.Nationality;
 import model.subclasses.Role;
 import model.entityInterfaces.IFootballerProfile;
 import model.subclasses.FootballerCharacteristicsEnum;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FootballerProfile implements IFootballerProfile {
     private final String _name;
     private final Nationality _nationality;
-    private String _club;
-    private List<Role> _prefered_roles;
+    private List<Role> _preferedRoles;
     private short _number;
-    private short _age;
+    private final LocalDate _dateOfBirth;
     private int _transfer_cost;
 
     private boolean _injured;
     private short _daysToHeal;
-
 
     private double _currentPhysicalForm = 1.0;
     private double _currentEmotionalState = 1.0;
 
     private BaseFootballerCharacteristics _characteristics;
 
-    public FootballerProfile(String name, Nationality nationality, String club, List<Role> prefered_roles, short number,
-    BaseFootballerCharacteristics characteristics) {
+
+	@JsonCreator
+    public FootballerProfile(String name, Nationality nationality, @JsonProperty("prefered roles")List<Role> preferedRoles,
+	@JsonProperty("date of birth")LocalDate dateOfBirth, short number, BaseFootballerCharacteristics characteristics) {
         _name = name;
         _nationality = nationality;
-        _club = club;
-        _prefered_roles = prefered_roles;
+        _preferedRoles = preferedRoles;
+		_dateOfBirth = dateOfBirth;
         _number = number;
         _characteristics = characteristics;
     }
@@ -48,12 +52,12 @@ public class FootballerProfile implements IFootballerProfile {
 
     @Override
     public List<Role> preferedRoles() {
-        return _prefered_roles;
+        return _preferedRoles;
     }
 
     @Override
     public void addRole(Role role) {
-        _prefered_roles.add(role);
+        _preferedRoles.add(role);
     }
 
     @Override
@@ -157,25 +161,10 @@ public class FootballerProfile implements IFootballerProfile {
         _currentEmotionalState = emotionalState;
     }
 
-    @Override
-    public String club() {
-        return _club;
-    }
-
-    @Override
-    public void setClub(String club) {
-        _club = club;
-    }
-
-    @Override
-    public short age() {
-        return _age;
-    }
-
-    @Override
-    public void increaseAge() {
-        _age += 1;
-    }
+	@Override
+	public LocalDate dateOfBirth() {
+		return _dateOfBirth;
+	}
 
     @Override
     public String name() {

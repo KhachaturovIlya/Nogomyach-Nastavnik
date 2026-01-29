@@ -7,7 +7,7 @@ import model.subclasses.Role;
 
 import java.util.List;
 
-public interface IFootballerProfile extends IHasName, IHasAge, IClubMember, IHasNationality {
+public interface IFootballerProfile extends IHasName, IHasDateOfBirth, IHasNationality {
     short number();
     void setNumber(short number);
 
