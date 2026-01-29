@@ -2,6 +2,7 @@ package model.repoImpls;
 
 import model.entityInterfaces.ITeam;
 import model.repoInterfaces.ILeague;
+import model.subclasses.LeagueRegulations;
 import model.subclasses.TournamentTableNote;
 
 import java.util.ArrayList;
@@ -10,14 +11,13 @@ import java.util.Comparator;
 public class NationalLeague implements ILeague {
 	private String _name;
 	private ArrayList<TournamentTableNote> _table;
-	private short _teamNumber;
-	private short _filledTeamNumber;
+	private LeagueRegulations _regulations;
 
 
-	public NationalLeague(String name, short teamNumber) {
+	public NationalLeague(String name, LeagueRegulations regulations) {
 		_name = name;
-		_teamNumber = teamNumber;
-		_table = new ArrayList<>(_teamNumber);
+		_regulations = regulations;
+		_table = new ArrayList<>(_regulations.amountOfTeams());
 	}
 
 	@Override
@@ -26,19 +26,22 @@ public class NationalLeague implements ILeague {
 	}
 
 	@Override
+	public LeagueRegulations regulations() {
+		return null;
+	}
+
+	@Override
 	public void addTeam(ITeam team) {
-		if (_filledTeamNumber > _teamNumber) {
+		if (_table.size() == _regulations.amountOfTeams()) {
 			throw new IndexOutOfBoundsException("league is already full");
 		}
 
-		_table.set(_filledTeamNumber, new TournamentTableNote(team));
-		_filledTeamNumber += 1;
+		_table.add(new TournamentTableNote(team));
 	}
 
 	@Override
 	public void removeTeam(String teamName) {
-		_table.removeIf(t -> t.team().name() == teamName);
-		_filledTeamNumber -= 1;
+		_table.removeIf(t -> t.team().name().equals(teamName));
 	}
 
 	@Override
