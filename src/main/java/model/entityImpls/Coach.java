@@ -1,39 +1,22 @@
 package model.entityImpls;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import model.entityInterfaces.ICoach;
 import model.subclasses.Nationality;
 
+import java.time.LocalDate;
+
 public class Coach implements ICoach {
     private String _name;
-    private String _club;
     private Nationality _nationality;
-    private short _age;
+    private LocalDate _dateOfBirth;
 
-    public Coach(String name, String club, Nationality nationality, short age) {
+	@JsonCreator
+    public Coach(String name, Nationality nationality, @JsonProperty("date of birth")LocalDate dateOfBirth) {
         _name = name;
-        _club = club;
         _nationality = nationality;
-        _age = age;
-    }
-
-    @Override
-    public String club() {
-        return _club;
-    }
-
-    @Override
-    public void setClub(String club) {
-        _club = club;
-    }
-
-    @Override
-    public short age() {
-        return _age;
-    }
-
-    @Override
-    public void increaseAge() {
-        _age += 1;
+        _dateOfBirth = dateOfBirth;
     }
 
     @Override
@@ -45,4 +28,9 @@ public class Coach implements ICoach {
     public Nationality nationality() {
         return _nationality;
     }
+
+	@Override
+	public LocalDate dateOfBirth() {
+		return _dateOfBirth;
+	}
 }
