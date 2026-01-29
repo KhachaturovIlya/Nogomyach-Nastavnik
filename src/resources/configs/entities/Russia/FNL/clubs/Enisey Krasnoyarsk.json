@@ -1,0 +1,89 @@
+{
+  "name": "Enisey Krasnoyarsk",
+  "home stadium": {
+    "name": "potato field",
+    "capacity": 10
+  },
+  "head coach": {
+    "name": "xui s gory",
+    "nationality": "Belarus",
+    "date of birth": "1873-01-01"
+  },
+  "players":
+  [
+  {
+    "name": "Petr Zalupkin",
+    "nationality": "Russia",
+    "prefered roles": [
+      "CB"
+    ],
+    "number": 99,
+    "date of birth": "1923-01-01",
+    "transfer cost": 10,
+    "characteristics": {
+      "weight": 200,
+      "height": 120,
+      "short pass": 90,
+      "long pass": 90,
+      "crosses": 90,
+      "vision": 90,
+      "position choosing": 90,
+      "confidence": 90,
+      "discipline": 90,
+      "composure": 90,
+      "finishing": 90,
+      "long shooting": 90,
+      "dribbling": 90,
+      "technique": 90,
+      "tackle": 90,
+      "interception": 90,
+      "power": 90,
+      "stamina": 90,
+      "sprint speed": 90,
+      "headplay": 90,
+      "reaction": 90,
+      "jumping": 90,
+      "playing out": 90,
+      "cross interception": 90
+    }
+  },
+  {
+    "name": "Viktor Korneplod",
+    "club": "Enisey Krasnoyarsk",
+    "nationality": "Russia",
+    "prefered roles": [
+      "ST"
+    ],
+    "number": 98,
+    "date of birth": "1923-02-11",
+    "transfer cost": 10,
+    "characteristics": {
+      "weight": 200,
+      "height": 120,
+      "short pass": 90,
+      "long pass": 90,
+      "crosses": 90,
+      "vision": 90,
+      "position choosing": 90,
+      "confidence": 90,
+      "discipline": 90,
+      "composure": 90,
+      "finishing": 90,
+      "long shooting": 90,
+      "dribbling": 90,
+      "technique": 90,
+      "tackle": 90,
+      "interception": 90,
+      "power": 90,
+      "stamina": 90,
+      "sprint speed": 90,
+      "headplay": 90,
+      "reaction": 90,
+      "jumping": 90,
+      "playing out": 90,
+      "cross interception": 90
+    }
+  }
+  ],
+  "transfer budget": 1
+}
