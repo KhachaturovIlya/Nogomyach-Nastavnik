@@ -1,19 +1,26 @@
 package model.entityImpls;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import model.entityInterfaces.*;
+import model.subclasses.Stadium;
 
 import java.util.List;
 import java.util.Optional;
 
 public class Club implements ITeam {
     private String _name;
+	private Stadium _homeStadium;
     private ICoach _headCoach;
 	private List<ISquad> _defaultSquads;
     private List<IFootballerProfile> _players;
     private int _transferBudget;
 
-    public Club(String name, int transferBudget) {
+	@JsonCreator
+    public Club(String name, Stadium homeStadium, ICoach headCoach, List<IFootballerProfile> players, int transferBudget) {
         _name = name;
+		_homeStadium = homeStadium;
+		_headCoach = headCoach;
+		_players = players;
         _transferBudget = transferBudget;
     }
 
@@ -52,12 +59,17 @@ public class Club implements ITeam {
         return _players.stream().filter(p -> p.number() == number).findAny();
     }
 
+	@Override
+	public Stadium homeStadion() {
+		return _homeStadium;
+	}
+
 	public void increaseTransferBudget(int add) {
 		_transferBudget += add;
 	}
 
 	public void decreaseTransferBudget(int loss) {
-		_transferBudget -= loss;
+		_transferBudget -= Math.min(loss, _transferBudget);
 	}
 
 	public int transferBudget() {
