@@ -56,7 +56,7 @@ public class DefaultPresenter implements IPresenter {
 
         for (DataBinding binding : textConfig.bindings()) {
             try {
-                String data = commandLibrary.getContextCommand(binding.query()).execute(binding.subjectId());
+                String data = commandLibrary.getContextCommand(binding.query()).execute(binding.subjectId()).getFirst();
                 context.add(data != null ? data : "???");
             } catch (Exception e) {
                 return template;
@@ -82,6 +82,16 @@ public class DefaultPresenter implements IPresenter {
             visualWidgetDTOs.add(toVisualDtoFlatten(widget, widgetGlobalNormalizedPosition,
                 parentWidth, parentHeight));
             if (widget instanceof Container container) {
+                if (container instanceof DynamicContainer dynamicContainer) {
+                    try {
+                        dynamicContainer.rebuild(commandLibrary.getContextCommand(dynamicContainer.getTemplatesInfo().query()).execute(
+                            dynamicContainer.getTemplatesInfo().subjectId()
+                        ));
+                    } catch (Exception e) {
+                        System.out.println("Exception while rebuilding template " + dynamicContainer.getTemplatesInfo().query());
+                    }
+                }
+
                 flattenContainerToVisualDto(container.getChildren(), visualWidgetDTOs,
                     widgetGlobalNormalizedPosition, widgetGlobalWidth, widgetGlobalHeight);
             }

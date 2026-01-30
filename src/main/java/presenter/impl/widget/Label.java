@@ -9,4 +9,16 @@ public final class Label extends Widget {
                  TextConfig textConfig, Vector2 normalizedPosition) {
         super(active, name, shape, shapeColor, textConfig, normalizedPosition);
     }
+
+    public Label(Label label) {
+        super(label);
+    }
+
+    @Override
+    public Widget wither(TextConfig textConfig) {
+        Label label = new Label(this);
+
+        label.textConfig = textConfig;
+        return label;
+    }
 }

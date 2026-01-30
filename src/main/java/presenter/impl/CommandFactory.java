@@ -2,6 +2,7 @@ package presenter.impl;
 
 import presenter.impl.commands.action_commands.*;
 import presenter.impl.commands.context_commands.TeamBudget;
+import presenter.impl.commands.context_commands.VolumeLevel;
 
 public class CommandFactory {
     DefaultPresenter defaultPresenter;
@@ -34,7 +35,13 @@ public class CommandFactory {
         );
 
         commandLibrary.registerContextCommand("TEAM_BUDGET",
-            new TeamBudget(defaultPresenter));
+            new TeamBudget(defaultPresenter)
+        );
+
+        commandLibrary.registerContextCommand(
+            "VOLUME_LEVEL",
+            new VolumeLevel(defaultPresenter)
+        );
 
         return commandLibrary;
     }

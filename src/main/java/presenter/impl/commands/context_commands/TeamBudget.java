@@ -13,7 +13,7 @@ public class TeamBudget extends ContextCommand {
     }
 
     @Override
-    public String execute(String context) throws Exception {
-        return "11002300";
+    public List<String> execute(String context) throws Exception {
+        return List.of("11002300");
     }
 }

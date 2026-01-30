@@ -16,6 +16,19 @@ public final class Button extends Widget {
         this.actionContext = actionContext;
     }
 
+    public Button(Button button) {
+        super(button);
+        this.clickActions = button.clickActions;
+        this.actionContext = button.actionContext;
+    }
+
+    @Override
+    public Button wither(TextConfig textConfig) {
+        Button button = new Button(this);
+        button.textConfig = textConfig;
+        return button;
+    }
+
     public List<String> getClickActions() {
         return clickActions;
     }

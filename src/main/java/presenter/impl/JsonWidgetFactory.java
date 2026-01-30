@@ -7,8 +7,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import presenter.impl.interfaces.ILayoutStrategy;
 import presenter.impl.interfaces.IWidgetFileFactory;
 import presenter.impl.widget.*;
+import presenter.impl.widget.dinamicContainerPolicies.HorizontalLayout;
+import presenter.impl.widget.dinamicContainerPolicies.VerticalLayout;
 import shared.*;
 
 import java.io.IOException;
@@ -21,7 +24,6 @@ import java.util.function.BiFunction;
 public class JsonWidgetFactory implements IWidgetFileFactory {
     final private Path srcPath;
     final private ObjectMapper mapper;
-    final static private AtomicInteger counter = new AtomicInteger(0);
 
     @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -43,7 +45,8 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
     @JsonSubTypes({
         @JsonSubTypes.Type(value = Button.class, name = "button"),
         @JsonSubTypes.Type(value = Label.class, name = "label"),
-        @JsonSubTypes.Type(value = Container.class, name = "container")
+        @JsonSubTypes.Type(value = Container.class, name = "container"),
+        @JsonSubTypes.Type(value = DynamicContainer.class, name = "dynamic_container")
     })
     public static abstract class WidgetMixin {}
 
@@ -57,6 +60,48 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
             @JsonProperty("textConfig") TextConfig textConfig,
             @JsonProperty("normalizedPosition") Vector2 normalizedPosition,
             @JsonProperty("children") List<Widget> children
+        ) {}
+    }
+
+    public abstract static class DynamicContainerMixin {
+        @JsonCreator
+        DynamicContainerMixin(
+            @JsonProperty("active") boolean active,
+            @JsonProperty("name") String name,
+            @JsonProperty("shape") Shape shape,
+            @JsonProperty("shapeColor") Color shapeColor,
+            @JsonProperty("textConfig") TextConfig textConfig,
+            @JsonProperty("normalizedPosition") Vector2 normalizedPosition,
+            @JsonProperty("layoutStrategy") ILayoutStrategy layoutStrategy,
+            @JsonProperty("template") Widget template,
+            @JsonProperty("templatesInfo") DataBinding templatesInfo
+        ) {}
+    }
+
+    @JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+    )
+    @JsonSubTypes({
+        @JsonSubTypes.Type(value = HorizontalLayout.class, name = "horizontal_layout"),
+        @JsonSubTypes.Type(value = VerticalLayout.class, name = "vertical_layout")
+    })
+    public static abstract class LayoutMixin {}
+
+    public abstract static class HorizontalLayoutMixin {
+        @JsonCreator
+        public HorizontalLayoutMixin(
+            @JsonProperty("gap") double gap,
+            @JsonProperty("sideMargin") double sideMargin
+        ) {}
+    }
+
+    public abstract static class VerticalLayoutMixin {
+        @JsonCreator
+        public VerticalLayoutMixin(
+            @JsonProperty("gap") double gap,
+            @JsonProperty("sideMargin") double sideMargin
         ) {}
     }
 
@@ -102,6 +147,10 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
         this.mapper.addMixIn(Button.class, ButtonMixin.class);
         this.mapper.addMixIn(Label.class, LabelMixin.class);
         this.mapper.addMixIn(Container.class, ContainerMixin.class);
+        this.mapper.addMixIn(DynamicContainer.class, DynamicContainerMixin.class);
+        this.mapper.addMixIn(ILayoutStrategy.class, LayoutMixin.class);
+        this.mapper.addMixIn(HorizontalLayout.class, HorizontalLayoutMixin.class);
+        this.mapper.addMixIn(VerticalLayout.class, VerticalLayoutMixin.class);
     }
 
     @Override

@@ -6,5 +6,5 @@ import presenter.impl.widget.Widget;
 import java.util.List;
 
 public interface ILayoutStrategy {
-    void apply(List<Widget> widgets, double areaWidth, double areaHeight);
+    void apply(List<Widget> widgets);
 }

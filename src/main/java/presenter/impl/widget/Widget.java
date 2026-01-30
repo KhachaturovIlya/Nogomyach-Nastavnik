@@ -29,6 +29,16 @@ public sealed abstract class Widget permits Button, Label, Container {
         this.normalizedPosition = normalizedPosition;
     }
 
+    public Widget(Widget widget) {
+        this.id = nextId++;
+        this.name = widget.name;
+        this.active = widget.active;
+        this.shape = widget.shape;
+        this.shapeColor = widget.shapeColor;
+        this.textConfig = widget.textConfig;
+        this.normalizedPosition = widget.normalizedPosition;
+    }
+
     public int getId() {
         return id;
     }
@@ -72,4 +82,6 @@ public sealed abstract class Widget permits Button, Label, Container {
     public void enable() {
         this.active = true;
     }
+
+    abstract public Widget wither(TextConfig textConfig);
 }

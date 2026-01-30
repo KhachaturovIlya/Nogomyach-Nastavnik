@@ -6,12 +6,7 @@
     "normalizedPosition": { "x": 0.3, "y": 0.2 },
     "shape": { "type": "rectangle", "width": 0.4, "height": 0.6 },
     "shapeColor": { "red": 25, "green": 30, "blue": 45, "alpha": 250 },
-    "textConfig": {
-      "id": "NO_TEXT",
-      "type": "DEFAULT",
-      "color": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
-      "bindings": []
-    },
+    "textConfig": { "id": "NO_TEXT", "type": "DEFAULT", "color": { "red": 0, "green": 0, "blue": 0, "alpha": 0 }, "bindings": [] },
     "children": [
       {
         "type": "label",
@@ -43,33 +38,50 @@
       },
       {
         "type": "button",
-        "active": true,
         "name": "MUSIC_MINUS",
+        "active": true,
         "normalizedPosition": { "x": 0.1, "y": 0.28 },
-        "shape": { "type": "rectangle", "width": 0.38, "height": 0.08 },
+        "shape": { "type": "rectangle", "width": 0.08, "height": 0.08 },
         "shapeColor": { "red": 60, "green": 70, "blue": 90, "alpha": 255 },
-        "textConfig": {
-          "id": "ui.settings.VOL_DOWN",
-          "type": "DEFAULT",
-          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
-          "bindings": []
-        },
+        "textConfig": { "id": "-", "type": "DEFAULT", "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 }, "bindings": [] },
         "clickActions": ["DECREASE_VOLUME"],
         "actionsContext": [""]
       },
       {
-        "type": "button",
+        "type": "dynamic_container",
         "active": true,
-        "name": "MUSIC_PLUS",
-        "normalizedPosition": { "x": 0.52, "y": 0.28 },
-        "shape": { "type": "rectangle", "width": 0.38, "height": 0.08 },
-        "shapeColor": { "red": 60, "green": 70, "blue": 90, "alpha": 255 },
-        "textConfig": {
-          "id": "ui.settings.VOL_UP",
-          "type": "DEFAULT",
-          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
-          "bindings": []
+        "name": "VOLUME_BAR_DYNAMIC",
+        "normalizedPosition": { "x": 0.2, "y": 0.28 },
+        "shape": { "type": "rectangle", "width": 0.6, "height": 0.08 },
+        "shapeColor": { "red": 35, "green": 40, "blue": 55, "alpha": 255 },
+        "layoutStrategy": {
+          "type": "horizontal_layout",
+          "gap": 0.01,
+          "sideMargin": 0.02
         },
+        "textConfig": { "id": "NO_TEXT", "type": "DEFAULT", "color": { "red": 0, "green": 0, "blue": 0, "alpha": 0 }, "bindings": [] },
+        "template": {
+          "type": "label",
+          "active": true,
+          "name": "VOL_STEP",
+          "shape": { "type": "rectangle", "width": 0.05, "height": 0.9 },
+          "shapeColor": { "red": 0, "green": 200, "blue": 100, "alpha": 255 },
+          "normalizedPosition": { "x": 0.0, "y": 0.0 },
+          "textConfig": {
+            "id": "NO_TEXT", "type": "DEFAULT", "color": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+            "bindings": []
+          }
+        },
+        "templatesInfo": { "query": "VOLUME_LEVEL", "subjectId": "" }
+      },
+      {
+        "type": "button",
+        "name": "MUSIC_PLUS",
+        "active": true,
+        "normalizedPosition": { "x": 0.82, "y": 0.28 },
+        "shape": { "type": "rectangle", "width": 0.08, "height": 0.08 },
+        "shapeColor": { "red": 60, "green": 70, "blue": 90, "alpha": 255 },
+        "textConfig": { "id": "+", "type": "DEFAULT", "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 }, "bindings": [] },
         "clickActions": ["INCREASE_VOLUME"],
         "actionsContext": [""]
       },
