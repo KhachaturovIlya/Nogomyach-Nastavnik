@@ -8,8 +8,8 @@ import model.subclasses.Role;
 import model.entityInterfaces.IFootballerProfile;
 import model.subclasses.FootballerCharacteristicsEnum;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FootballerProfile implements IFootballerProfile {
@@ -18,7 +18,7 @@ public class FootballerProfile implements IFootballerProfile {
     private List<Role> _preferedRoles;
     private short _number;
     private final LocalDate _dateOfBirth;
-    private int _transfer_cost;
+    private int _transferCost;
 
     private boolean _injured;
     private short _daysToHeal;
@@ -28,15 +28,26 @@ public class FootballerProfile implements IFootballerProfile {
 
     private BaseFootballerCharacteristics _characteristics;
 
+	private boolean isTransferCostValid(int transferCost) {
+		return  0 <= transferCost;
+	}
+
 
 	@JsonCreator
-    public FootballerProfile(String name, Nationality nationality, @JsonProperty("prefered roles")List<Role> preferedRoles,
-	@JsonProperty("date of birth")LocalDate dateOfBirth, short number, BaseFootballerCharacteristics characteristics) {
+    public FootballerProfile(@JsonProperty("name")String name, @JsonProperty("nationality")Nationality nationality,
+	@JsonProperty("prefered roles")List<Role> preferedRoles, @JsonProperty("date of birth")LocalDate dateOfBirth,
+	@JsonProperty("number")short number, @JsonProperty("transfer cost")int transferCost,
+	@JsonProperty("characteristics")BaseFootballerCharacteristics characteristics)
+	throws InvalidParameterException {
+		if (!isTransferCostValid(transferCost)) {
+			throw new InvalidParameterException("invalid number: " + number);
+		}
         _name = name;
         _nationality = nationality;
         _preferedRoles = preferedRoles;
 		_dateOfBirth = dateOfBirth;
         _number = number;
+		_transferCost = transferCost;
         _characteristics = characteristics;
     }
 
@@ -62,22 +73,22 @@ public class FootballerProfile implements IFootballerProfile {
 
     @Override
     public int transferCost() {
-        return _transfer_cost;
+        return _transferCost;
     }
 
     @Override
     public void setTransferCost(int cost) {
-        _transfer_cost = cost;
+        _transferCost = cost;
     }
 
     @Override
     public void increaseTransferCost(int costAdd) {
-        _transfer_cost += costAdd;
+        _transferCost += costAdd;
     }
 
     @Override
     public void decreaseTransferCost(int costLoss) {
-        _transfer_cost -= costLoss;
+        _transferCost -= costLoss;
     }
 
     @Override
