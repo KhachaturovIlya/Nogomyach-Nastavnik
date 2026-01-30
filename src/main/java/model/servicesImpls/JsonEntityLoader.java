@@ -16,6 +16,7 @@ import model.subclasses.Nationality;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -25,43 +26,33 @@ public class JsonEntityLoader implements IEntityLoader {
 	private Map<Nationality, ICountry> _countries;
 
 
-	private ITeam loadClub(Path teamConfigPath) throws IOException {
-		try {
-			return _mapper.readValue(
-				_srcPath.resolve(teamConfigPath).toFile(),
-				new TypeReference<Club>() {}
-			);
-		} catch (IOException exception) {
-			System.err.println("Could not read config file: " + exception.getMessage());
-			throw exception;
-		}
+	private ITeam loadClub(Path teamConfigPath) throws IOException, InvalidParameterException {
+		return _mapper.readValue(
+			_srcPath.resolve(teamConfigPath).toFile(),
+			new TypeReference<Club>() {}
+		);
 	}
 
 	private ILeague loadLeague(Path leagueConfigPath) throws IOException {
+		LeagueRegulations regulations = _mapper.readValue(
+			_srcPath.resolve(leagueConfigPath + "regulations.json").toFile(),
+			new TypeReference<>() {});
+		ILeague league = new NationalLeague(leagueConfigPath.getFileName().toString(), regulations);
+
 		try(Stream<Path> clubs = Files.list(_srcPath.resolve(leagueConfigPath.toString() + "clubs"))) {
-
-			LeagueRegulations regulations = _mapper.readValue(
-					_srcPath.resolve(leagueConfigPath + "regulations.json").toFile(),
-					new TypeReference<>() {});
-			ILeague league = new NationalLeague(leagueConfigPath.getFileName().toString(), regulations);
-
 			clubs.forEach(club -> {
 				try {
-					ITeam team = _mapper.readValue(
-						club.toFile(),
-						new TypeReference<Club>() {}
-					);
+					ITeam team = loadClub(club);
 					league.addTeam(team);
 				} catch (IOException exception) {
 					System.err.println("invalid config file: " + exception.getMessage());
 					throw new RuntimeException(exception);
 				}
 			});
-
 			return league;
 		} catch (Exception exception) {
 			System.err.println("Could not read config file: " + exception.getMessage());
-			throw exception;
+			throw new IOException(exception);
 		}
 	}
 
@@ -81,7 +72,7 @@ public class JsonEntityLoader implements IEntityLoader {
 			return country;
 		} catch (Exception exception) {
 			System.err.println("invalid config file: " + exception.getMessage());
-			throw exception;
+			throw new IOException(exception);
 		}
 	}
 
@@ -106,7 +97,7 @@ public class JsonEntityLoader implements IEntityLoader {
 
 		} catch (Exception exception) {
 			System.err.println("Could not read config file: " + exception.getMessage());
-			throw exception;
+			throw new IOException(exception);
 		}
 	}
 }
