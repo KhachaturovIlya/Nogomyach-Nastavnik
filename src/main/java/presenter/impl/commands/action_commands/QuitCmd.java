@@ -10,7 +10,7 @@ public class QuitCmd extends Command {
     }
 
     @Override
-    public void execute(List<String> contextString) throws Exception {
+    public void execute(String contextString) throws Exception {
         defaultPresenter.shutdown();
     }
 }

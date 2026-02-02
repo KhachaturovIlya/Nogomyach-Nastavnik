@@ -28,8 +28,12 @@
           "bindings": []
         },
         "img" : [],
-        "clickActions": ["OPEN_TACTICS"],
-        "actionsContext": [""]
+        "clickActions" : [
+          {
+            "query": "OPEN_TACTICS",
+            "subjectId": ""
+          }
+        ]
       },
       {
         "type": "label",
@@ -122,8 +126,12 @@
           "bindings": []
         },
         "img" : [],
-        "clickActions": ["LOAD_NEW_SCENE"],
-        "actionsContext": ["GAME_FIELD"]
+        "clickActions" : [
+          {
+            "query": "LOAD_NEW_SCENE",
+            "subjectId": "GAME_FIELD"
+          }
+        ]
       },
       {
         "type": "button",
@@ -139,8 +147,12 @@
           "bindings": []
         },
         "img" : [],
-        "clickActions": ["SHIFT_WIDGET_STATE"],
-        "actionsContext": ["MAIN_MATCH_BAR"]
+        "clickActions" : [
+          {
+            "query": "SHIFT_WIDGET_STATE",
+            "subjectId": "MAIN_MATCH_BAR"
+          }
+        ]
       },
       {
         "type": "label",
@@ -201,8 +213,12 @@
           "bindings": []
         },
         "img" : [],
-        "clickActions": ["LOAD_NEW_SCENE"],
-        "actionsContext": ["SETTINGS"]
+        "clickActions" : [
+          {
+            "query": "LOAD_NEW_SCENE",
+            "subjectId": "SETTINGS"
+          }
+        ]
       },
       {
         "type": "button",
@@ -218,8 +234,12 @@
           "bindings": []
         },
         "img" : [],
-        "clickActions": ["EXIT"],
-        "actionsContext": [""]
+        "clickActions" : [
+          {
+            "query": "EXIT",
+            "subjectId": ""
+          }
+        ]
       }
     ]
   },

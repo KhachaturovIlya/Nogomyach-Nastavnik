@@ -208,9 +208,10 @@ public class DefaultPresenter implements IPresenter {
 
     private void handleWidgetAction(Widget widget) throws Exception {
         if (widget instanceof Button button) {
-            for (String command : button.getClickActions()) {
+            List<DataBinding> clickActions = button.getClickActions();
+            for (DataBinding binding : clickActions) {
                 try {
-                    commandLibrary.getCommand(command).execute(button.getActionContext());
+                    commandLibrary.getCommand(binding.query()).execute(binding.subjectId());
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
                 }

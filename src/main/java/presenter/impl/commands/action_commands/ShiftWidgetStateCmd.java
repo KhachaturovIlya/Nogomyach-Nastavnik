@@ -10,9 +10,7 @@ public class ShiftWidgetStateCmd extends Command {
     }
 
     @Override
-    public void execute(List<String> contextString) throws Exception {
-        for (String widgetId : contextString) {
-            defaultPresenter.shiftWidgetState(widgetId);
-        }
+    public void execute(String contextString) throws Exception {
+        defaultPresenter.shiftWidgetState(contextString);
     }
 }

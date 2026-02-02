@@ -10,9 +10,7 @@ public class ChangeSceneCmd extends Command {
     }
 
     @Override
-    public void execute(List<String> contextString) throws Exception {
-        for (String context : contextString) {
-            defaultPresenter.loadNewScene(context);
-        }
+    public void execute(String contextString) throws Exception {
+        defaultPresenter.loadNewScene(contextString);
     }
 }

@@ -20,4 +20,9 @@ public final class Label extends Widget {
         label.textConfig = textConfig;
         return label;
     }
+
+    @Override
+    public Label clone() {
+        return new Label(this);
+    }
 }

@@ -117,8 +117,7 @@ public class JsonWidgetFactory implements IWidgetFileFactory {
             @JsonProperty("img") List<String> img,
             @JsonProperty("textConfig") TextConfig textConfig,
             @JsonProperty("normalizedPosition") Vector2 normalizedPosition,
-            @JsonProperty("clickActions") List<String> actions,
-            @JsonProperty("actionsContext") List<String> context
+            @JsonProperty("clickActions") List<DataBinding> clickActions
         ) {}
     }
 

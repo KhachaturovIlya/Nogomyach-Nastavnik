@@ -79,6 +79,10 @@ public sealed abstract class Widget permits Button, Label, Container {
         this.normalizedPosition = normalizedPosition;
     }
 
+    public void setTextConfig(TextConfig textConfig) {
+        this.textConfig = textConfig;
+    }
+
     public void disable() {
         this.active = false;
 
@@ -88,4 +92,6 @@ public sealed abstract class Widget permits Button, Label, Container {
     }
 
     abstract public Widget wither(TextConfig textConfig);
+
+    abstract public Widget clone();
 }

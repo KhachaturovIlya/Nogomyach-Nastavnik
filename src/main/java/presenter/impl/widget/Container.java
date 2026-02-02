@@ -28,6 +28,11 @@ public non-sealed class Container extends Widget {
         this.children = container.children;
     }
 
+    @Override
+    public Container clone() {
+        return new Container(this);
+    }
+
     public Map<Integer, Widget> getChildren() {
         return children;
     }

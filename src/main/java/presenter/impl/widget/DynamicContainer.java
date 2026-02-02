@@ -1,6 +1,5 @@
 package presenter.impl.widget;
 
-import presenter.ILangService;
 import presenter.impl.interfaces.ILayoutStrategy;
 import shared.Color;
 import shared.Shape;
@@ -40,6 +39,11 @@ public class DynamicContainer extends Container {
         return container;
     }
 
+    @Override
+    public DynamicContainer clone() {
+        return new DynamicContainer(this);
+    }
+
     public DataBinding getTemplatesInfo() {
         return templatesInfo;
     }
@@ -55,31 +59,66 @@ public class DynamicContainer extends Container {
         }
     }
 
+    static private void injectClickActions(Widget widget, String id) {
+        if (widget instanceof Button button) {
+
+            List<DataBinding> clickActions = new ArrayList<>();
+
+            for (DataBinding binding : button.getClickActions()) {
+                String setId = binding.subjectId().isEmpty() ? id : binding.subjectId();
+
+                clickActions.add(new DataBinding(
+                        binding.query(),
+                        setId
+                ));
+            }
+
+            button.setClickActions(clickActions);
+        }
+    }
+
+    static private void injectSubjectIdsInChildren(Widget widget, String id) {
+        if (widget instanceof Container container) {
+            for (Widget children : container.children.values()) {
+                injectSubjectId(children, id);
+            }
+        }
+    }
+
+    static private void injectSubjectId(Widget widget, String id) {
+        TextConfig templateTextConfig = widget.getTextConfig();
+
+        List<DataBinding> dataBindings = new ArrayList<>();
+
+        for (DataBinding binding : templateTextConfig.bindings()) {
+            String setId = binding.subjectId().isEmpty() ? id : binding.subjectId();
+
+            dataBindings.add(new DataBinding(
+                    binding.query(),
+                    setId
+            ));
+        }
+
+        widget.setTextConfig(new TextConfig(
+            templateTextConfig.id(),
+            templateTextConfig.color(),
+            templateTextConfig.type(),
+            dataBindings
+        ));
+
+        injectClickActions(widget, id);
+        injectSubjectIdsInChildren(widget, id);
+    }
+
     private List<Widget> generate(List<String> templatesInfo) {
         List<Widget> generated = new ArrayList<>();
 
-        TextConfig templateTextConfig = this.template.getTextConfig();
-
         for (String templateInfo : templatesInfo) {
-            List<DataBinding> dataBindings = new ArrayList<>();
+            Widget generatedWidget = template.clone();
 
-            for (DataBinding dataBinding : templateTextConfig.bindings()) {
-                dataBindings.add(
-                    new DataBinding(
-                        dataBinding.query(),
-                        templateInfo
-                    )
-                );
-            }
+            injectSubjectId(generatedWidget, templateInfo);
 
-            generated.add(template.wither(
-              new TextConfig(
-                  templateTextConfig.id(),
-                  templateTextConfig.color(),
-                  templateTextConfig.type(),
-                  dataBindings
-              )
-            ));
+            generated.add(generatedWidget);
         }
 
         return generated;

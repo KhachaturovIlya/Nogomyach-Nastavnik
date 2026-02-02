@@ -70,8 +70,12 @@
           "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
           "bindings": []
         },
-        "clickActions": ["LOAD_NEW_SCENE"],
-        "actionsContext": ["MAIN_MENU"]
+        "clickActions": [
+          {
+            "query" : "LOAD_NEW_SCENE",
+            "subjectId" : "MAIN_MENU"
+          }
+        ]
       }
     ]
   }

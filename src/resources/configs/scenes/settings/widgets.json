@@ -48,8 +48,12 @@
         "shapeColor": { "red": 60, "green": 70, "blue": 90, "alpha": 255 },
         "textConfig": { "id": "-", "type": "DEFAULT", "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 }, "bindings": [] },
         "img" : [],
-        "clickActions": ["DECREASE_VOLUME"],
-        "actionsContext": [""]
+        "clickActions" : [
+          {
+            "query": "DECREASE_VOLUME",
+            "subjectId": ""
+          }
+        ]
       },
       {
         "type": "dynamic_container",
@@ -78,7 +82,7 @@
           },
           "img" : []
         },
-        "templatesInfo": { "query": "VOLUME_LEVEL", "subjectId": "" }
+        "templatesInfo": { "query": "VOLUME_LEVEL", "subjectId": "NO_SUBJECT" }
       },
       {
         "type": "button",
@@ -89,8 +93,12 @@
         "shapeColor": { "red": 60, "green": 70, "blue": 90, "alpha": 255 },
         "textConfig": { "id": "+", "type": "DEFAULT", "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 }, "bindings": [] },
         "img" : [],
-        "clickActions": ["INCREASE_VOLUME"],
-        "actionsContext": [""]
+        "clickActions" : [
+          {
+            "query": "INCREASE_VOLUME",
+            "subjectId": "SETTINGS"
+          }
+        ]
       },
       {
         "type": "button",
@@ -106,8 +114,12 @@
           "bindings": []
         },
         "img" : [],
-        "clickActions": ["TOGGLE_FS"],
-        "actionsContext": [""]
+        "clickActions" : [
+          {
+            "query": "TOGGLE_FS",
+            "subjectId": ""
+          }
+        ]
       },
       {
         "type": "button",
@@ -123,8 +135,12 @@
           "bindings": []
         },
         "img" : [],
-        "clickActions": ["LOAD_NEW_SCENE"],
-        "actionsContext": ["MAIN_MENU"]
+        "clickActions" : [
+          {
+            "query": "LOAD_NEW_SCENE",
+            "subjectId": "MAIN_MENU"
+          }
+        ]
       }
     ]
   }

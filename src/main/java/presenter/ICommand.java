@@ -3,5 +3,5 @@ package presenter;
 import java.util.List;
 
 public interface ICommand {
-    void execute(List<String> contextString) throws Exception;
+    void execute(String contextString) throws Exception;
 }

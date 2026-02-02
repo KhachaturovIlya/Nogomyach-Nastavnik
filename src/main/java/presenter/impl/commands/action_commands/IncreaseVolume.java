@@ -10,9 +10,11 @@ public class IncreaseVolume extends Command {
     }
 
     @Override
-    public void execute(List<String> contextString) throws Exception {
+    public void execute(String contextString) throws Exception {
         float volume = defaultPresenter.getVolume();
-        if (volume + 2.5f <= 5.f) {
+        if (volume <= -35.f) {
+            defaultPresenter.setVolume(-32.5f);
+        } else if (volume + 2.5f <= 5.f) {
             defaultPresenter.setVolume(volume + 2.5f);
         }
     }
