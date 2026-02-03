@@ -1,62 +1,66 @@
 package model.subclasses;
 
-import model.entityInterfaces.ITeam;
-
 public class TournamentTableNote {
-	private ITeam _team;
-	private short _points;
-	private short _goalsConceded;
-	private short _goalsScored;
-	private short _cleanSheets;
+	private String teamName;
+	private short matches;
+	private short points;
+	private short goalsConceded;
+	private short goalsScored;
+	private short cleanSheets;
 
-	public TournamentTableNote(ITeam team) {
-		_team = team;
+	public TournamentTableNote(String teamName) {
+		this.teamName = teamName;
 	}
 
-	public ITeam team() {
-		return _team;
+	public String team() {
+		return teamName;
 	}
 
-	public String teamName() {
-		return _team.name();
+	public short matches() {
+		return matches;
+	}
+
+	public void increaseMatches() {
+		matches += 1;
 	}
 
 	public short points() {
-		return _points;
+		return points;
 	}
 
 	public void increasePoints(short add) {
-		_points += add;
+		points += add;
 	}
 
 	public short goalsConceded() {
-		return _goalsConceded;
+		return goalsConceded;
 	}
 
 	public void increaseGoalsConceded(short add) {
-		_goalsConceded += add;
+		goalsConceded += add;
 	}
 
 	public short goalsScored() {
-		return _goalsScored;
+		return goalsScored;
 	}
 
 	public void increaseGoalScored(short add) {
-		_goalsScored += add;
+		goalsScored += add;
 	}
 
 	public short cleanSheets() {
-		return _cleanSheets;
+		return cleanSheets;
 	}
 
 	public void increaseCleanSheets() {
-		_cleanSheets += 1;
+		cleanSheets += 1;
 	}
 
 	public void reset() {
-		_points = 0;
-		_goalsConceded = 0;
-		_goalsScored = 0;
-		_cleanSheets = 0;
+		matches = 0;
+		points = 0;
+		goalsConceded = 0;
+		goalsScored = 0;
+		cleanSheets = 0;
 	}
 }
