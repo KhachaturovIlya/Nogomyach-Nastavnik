@@ -71,8 +71,8 @@ public class SwissSystemCup implements ISwissSystemCup {
 		}
 		List<String> res = new ArrayList<>(playOffPairs.size() * 2);
 		playOffPairs.forEach(p -> {
-			res.add(p.teamY());
-			res.add(p.teamY());
+			res.add(p.awayTeam());
+			res.add(p.awayTeam());
 		});
 		return res;
 	}

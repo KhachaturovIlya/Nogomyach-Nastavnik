@@ -6,27 +6,60 @@ import model.servicesInterfaces.IDrawService;
 import model.subclasses.MatchNote;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LeagueDrawService implements IDrawService {
-	private Random random = new Random();
+	private List<String> teams;
+	private Set<Integer> occupiedTeamsIndexes;
+	private Map<String, List<MatchNote>> schedule;
+	private int teamCnt;
+	private int tourCnt;
 
-	private void holdATourDraw(List<String> teams) {
-		int size = teams.size();
-		List<MatchNote> res = new ArrayList<>(size / 2);
-		for (int i = 0; i < size; i += 1) {
-			int opponentIndex = random.nextInt(size - i + 1) + i;
-			res.add(new MatchNote(teams.get(i), teams.get(opponentIndex)));
+	private void holdATeamDraw(int teamIndex) {
+		for (int tour = 0; tour < tourCnt; tour++) {
+			if (null != schedule.get(teams.get(teamIndex)).get(tour)) {
+				continue;
+			}
+
+			if (tour == tourCnt / 2) {
+				occupiedTeamsIndexes.clear();
+			}
+
+			int opponentIndex;
+			do {
+				opponentIndex = ThreadLocalRandom.current().nextInt(teamIndex + 1, teamCnt);
+			} while (null != schedule.get(teams.get(teamIndex)).get(tour) && occupiedTeamsIndexes.contains(opponentIndex));
+
+			MatchNote match;
+			if (tour < tourCnt / 2) {
+				match = new MatchNote(teams.get(teamIndex), teams.get(opponentIndex));
+			} else {
+				match = new MatchNote(teams.get(opponentIndex), teams.get(teamIndex));
+			}
+			schedule.get(teams.get(teamIndex)).add(match);
+			schedule.get(teams.get(opponentIndex)).add(match);
+			occupiedTeamsIndexes.add(opponentIndex);
 		}
+		occupiedTeamsIndexes.clear();
 	}
 
 
 	@Override
 	public void holdADraw(ITournament tournament) {
-		List<String> teams = tournament.teams();
-		Map<String, List<MatchNote>> res = new HashMap<>(teams.size());
+		teams = tournament.teams();
+		occupiedTeamsIndexes = new HashSet<>(teamCnt);
+		schedule = new TreeMap<>();
+		teamCnt = teams.size();
+		tourCnt = (tournament.regulations().amountOfTeams() - 1) << 1;
 
+		teams.forEach(team ->
+			schedule.put(team, new ArrayList<>(Collections.nCopies(tourCnt, null))));
 
+		for (int i = 0; i < teamCnt; i++) {
+			holdATeamDraw(i);
+		}
 
 		var league = (INationalLeague) tournament;
+		league.setSchedule(schedule);
 	}
 }

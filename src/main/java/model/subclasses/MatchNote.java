@@ -6,21 +6,21 @@ import java.security.InvalidParameterException;
 import java.time.LocalDate;
 
 public class MatchNote {
-	private String teamX;
-	private String teamY;
+	private String homeTeam;
+	private String awayTeam;
 	private short goalsTeamX;
 	private short goalsTeamY;
 	private LocalDate date;
 
-	public MatchNote(String teamX, String teamY, LocalDate date) {
-		this.teamX = teamX;
-		this.teamY = teamY;
+	public MatchNote(String homeTeam, String awayTeam, LocalDate date) {
+		this.homeTeam = homeTeam;
+		this.awayTeam = awayTeam;
 		this.date = date;
 	}
 
-	public MatchNote(String teamX, String teamY) {
-		this.teamX = teamX;
-		this.teamY = teamY;
+	public MatchNote(String homeTeam, String awayTeam) {
+		this.homeTeam = homeTeam;
+		this.awayTeam = awayTeam;
 	}
 
 	public Pair<Short> score() {
@@ -35,12 +35,12 @@ public class MatchNote {
 		goalsTeamY += goals;
 	}
 
-	public String teamX() {
-		return teamX;
+	public String homeTeam() {
+		return homeTeam;
 	}
 
-	public String teamY() {
-		return teamY;
+	public String awayTeam() {
+		return awayTeam;
 	}
 
 	public void changeDate(LocalDate newDate) {
@@ -52,7 +52,7 @@ public class MatchNote {
 	}
 
 	public boolean containsTeam(String team) {
-		return teamX.equals(team) || teamY.equals(team);
+		return homeTeam.equals(team) || awayTeam.equals(team);
 	}
 
 	public String teamOpponent(String team) {
@@ -60,9 +60,9 @@ public class MatchNote {
 			throw new InvalidParameterException(
 					"team '" + team +"' does not participate in this match (MatchNote::teamOpponent)");
 		}
-		if (teamY.equals(team)) {
-			return teamX;
+		if (awayTeam.equals(team)) {
+			return homeTeam;
 		}
-		return teamY;
+		return awayTeam;
 	}
 }
