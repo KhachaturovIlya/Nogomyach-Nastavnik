@@ -1,0 +1,23 @@
+{
+  "ui.common.OK": "ОК",
+  "ui.common.CANCEL": "ОТМЕНА",
+  "ui.common.BACK": "НАЗАД",
+  "ui.common.YES": "ДА",
+  "ui.common.NO": "НЕТ",
+  "ui.common.LOADING": "ЗАГРУЗКА...",
+  "ui.common.ERROR": "ОШИБКА",
+
+  "ui.main_menu.PLAY_NOW": "ИГРАТЬ",
+  "ui.main_menu.QUIT": "ВЫХОД",
+  "ui.main_menu.TACTICS": "ТАКТИКА",
+  "ui.main_menu.UPCOMING_MATCH": "СЛЕДУЮЩИЙ МАТЧ",
+  "ui.main_menu.HOME": "ХОЗЯЕВА",
+  "ui.main_menu.AWAY": "ГОСТИ",
+  "ui.main_menu.VS": "против",
+  "ui.main_menu.LEAGUE_STANDINGS": "ТАБЛИЦА ЛИГИ",
+  "ui.main_menu.SHOW_MAIN_MATCH_BAR": "МАТЧ-ЦЕНТР",
+
+  "ui.game_field.PAUSE": "ПАУЗА",
+  "ui.game_field.SCORE": "СЧЕТ",
+  "ui.game_field.TIMER": "ВРЕМЯ"
+}

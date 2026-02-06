@@ -1,13 +1,12 @@
 package presenter.impl.interfaces;
 
 import presenter.impl.CommandLibrary;
-import presenter.impl.Widget;
+import presenter.impl.widget.Widget;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Map;
 
 public interface IWidgetFileFactory {
-    public List<Widget> constructButtons(Path configPath, CommandLibrary commandLibrary) throws IOException;
-    public List<Widget> constructLabels(Path configPath) throws IOException;
+    Map<Integer, Widget> construct(Path configPath) throws IOException;
 }

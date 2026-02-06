@@ -1,0 +1,6 @@
+{
+  "icon_settings": "icons/settings.png",
+  "bg_main": "backgrounds/main_menu.png",
+  "btn_exit": "ui/buttons/exit_red.png",
+  "football_main_theme" : "football_main_theme.png"
+}

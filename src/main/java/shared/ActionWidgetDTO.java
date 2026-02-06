@@ -1,7 +1,9 @@
 package shared;
 
+import java.util.List;
+
 public record ActionWidgetDTO (
-    int id,
+    List<Integer> ids,
     Shape shape,
     Vector2 position
 ) {}

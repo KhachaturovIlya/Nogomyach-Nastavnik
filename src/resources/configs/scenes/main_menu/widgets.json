@@ -1,0 +1,283 @@
+[
+  {
+    "type": "container",
+    "active": true,
+    "name": "MAIN_MATCH_BAR",
+    "normalizedPosition": { "x": 0.3, "y": 0.25 },
+    "shape": { "type": "rectangle", "width": 0.6, "height": 0.4 },
+    "shapeColor": { "red": 25, "green": 30, "blue": 45, "alpha": 200 },
+    "textConfig": {
+      "id": "NO_TEXT",
+      "type": "DEFAULT",
+      "color": { "red": 255, "green": 255, "blue": 255, "alpha": 20 },
+      "bindings": []
+    },
+    "img" : [],
+    "children": [
+      {
+        "type": "button",
+        "active": true,
+        "name": "TACTICS",
+        "normalizedPosition": { "x": 0.3, "y": 0.75 },
+        "shape": { "type": "rectangle", "width": 0.4, "height": 0.15 },
+        "shapeColor": { "red": 60, "green": 70, "blue": 90, "alpha": 255 },
+        "textConfig": {
+          "id": "ui.main_menu.TACTICS",
+          "type": "DEFAULT",
+          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : [],
+        "clickActions" : [
+          {
+            "query": "OPEN_TACTICS",
+            "subjectId": ""
+          }
+        ]
+      },
+      {
+        "type": "label",
+        "active": true,
+        "name": "UPCOMING MATCH",
+        "normalizedPosition": { "x": 0.0, "y": 0.0 },
+        "shape": { "type": "rectangle", "width": 1.0, "height": 0.15 },
+        "shapeColor": { "red": 0, "green": 120, "blue": 255, "alpha": 255 },
+        "textConfig": {
+          "id": "ui.main_menu.UPCOMING_MATCH",
+          "type": "CAPTION",
+          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : []
+      },
+      {
+        "type": "label",
+        "active": true,
+        "name": "HOME",
+        "normalizedPosition": { "x": 0.05, "y": 0.35 },
+        "shape": { "type": "rectangle", "width": 0.4, "height": 0.3 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+        "textConfig": {
+          "id": "ui.main_menu.HOME",
+          "type": "CAPTION",
+          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : []
+      },
+      {
+        "type": "label",
+        "active": true,
+        "name": "VS",
+        "normalizedPosition": { "x": 0.45, "y": 0.35 },
+        "shape": { "type": "rectangle", "width": 0.1, "height": 0.3 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+        "textConfig": {
+          "id": "ui.main_menu.VS",
+          "type": "DEFAULT",
+          "color": { "red": 100, "green": 100, "blue": 120, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : []
+      },
+      {
+        "type": "label",
+        "active": true,
+        "name": "AWAY",
+        "normalizedPosition": { "x": 0.55, "y": 0.35 },
+        "shape": { "type": "rectangle", "width": 0.4, "height": 0.3 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+        "textConfig": {
+          "id": "ui.main_menu.AWAY",
+          "type": "CAPTION",
+          "color": { "red": 220, "green": 50, "blue": 50, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : []
+      }
+    ]
+  },
+  {
+    "type": "container",
+    "active": true,
+    "name": "SIDEBAR",
+    "normalizedPosition": { "x": 0.0, "y": 0.0 },
+    "shape": { "type": "rectangle", "width": 0.22, "height": 1.0 },
+    "shapeColor": { "red": 18, "green": 22, "blue": 30, "alpha": 255 },
+    "textConfig": {
+      "id": "NO_TEXT",
+      "type": "DEFAULT",
+      "color": { "red": 255, "green": 255, "blue": 255, "alpha": 20 },
+      "bindings": []
+    },
+    "img" : [],
+    "children": [
+      {
+        "type": "button",
+        "active": true,
+        "name": "PLAY NOW",
+        "normalizedPosition": { "x": 0.05, "y": 0.02 },
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.08 },
+        "shapeColor": { "red": 0, "green": 230, "blue": 118, "alpha": 255 },
+        "textConfig": {
+          "id": "ui.main_menu.PLAY_NOW",
+          "type": "DEFAULT",
+          "color": { "red": 10, "green": 30, "blue": 10, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : [],
+        "clickActions" : [
+          {
+            "query": "LOAD_NEW_SCENE",
+            "subjectId": "GAME_FIELD"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "active": true,
+        "name": "SHOW_MAIN_MATCH_BAR",
+        "normalizedPosition": { "x": 0.05, "y": 0.12 },
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.08 },
+        "shapeColor": { "red": 0, "green": 45, "blue": 230, "alpha": 255 },
+        "textConfig": {
+          "id": "ui.main_menu.SHOW_MAIN_MATCH_BAR",
+          "type": "DEFAULT",
+          "color": { "red": 10, "green": 30, "blue": 10, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : [],
+        "clickActions" : [
+          {
+            "query": "SHIFT_WIDGET_STATE",
+            "subjectId": "MAIN_MATCH_BAR"
+          }
+        ]
+      },
+      {
+        "type": "label",
+        "active": true,
+        "name": "LEAGUE STANDINGS",
+        "normalizedPosition": { "x": 0.05, "y": 0.25 },
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.03 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+        "textConfig": {
+          "id": "ui.main_menu.LEAGUE_STANDINGS",
+          "type": "DEFAULT",
+          "color": { "red": 130, "green": 140, "blue": 160, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : []
+      },
+      {
+        "type": "label",
+        "active": true,
+        "name": "CITY_SCORE_LABEL",
+        "normalizedPosition": { "x": 0.05, "y": 0.30 },
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.04 },
+        "shapeColor": { "red": 255, "green": 255, "blue": 255, "alpha": 10 },
+        "textConfig": {
+          "id": "ui.main_menu.CITY_SCORE",
+          "type": "DEFAULT",
+          "color": { "red": 200, "green": 200, "blue": 200, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : []
+      },
+      {
+        "type": "label",
+        "active": true,
+        "name": "PLAYER_SCORE_LABEL",
+        "normalizedPosition": { "x": 0.05, "y": 0.35 },
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.04 },
+        "shapeColor": { "red": 0, "green": 230, "blue": 118, "alpha": 40 },
+        "textConfig": {
+          "id": "ui.main_menu.PLAYER_SCORE",
+          "type": "DEFAULT",
+          "color": { "red": 0, "green": 230, "blue": 118, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : []
+      },
+      {
+        "type": "button",
+        "active": true,
+        "name": "SETTINGS_BUTTON",
+        "normalizedPosition": { "x": 0.05, "y": 0.85 },
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.05 },
+        "shapeColor": { "red": 80, "green": 85, "blue": 100, "alpha": 255 },
+        "textConfig": {
+          "id": "ui.main_menu.SETTINGS",
+          "type": "DEFAULT",
+          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : [],
+        "clickActions" : [
+          {
+            "query": "LOAD_NEW_SCENE",
+            "subjectId": "SETTINGS"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "active": true,
+        "name": "QUIT_BUTTON",
+        "normalizedPosition": { "x": 0.05, "y": 0.92 },
+        "shape": { "type": "rectangle", "width": 0.9, "height": 0.05 },
+        "shapeColor": { "red": 180, "green": 50, "blue": 50, "alpha": 255 },
+        "textConfig": {
+          "id": "ui.main_menu.QUIT",
+          "type": "DEFAULT",
+          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+          "bindings": []
+        },
+        "img" : [],
+        "clickActions" : [
+          {
+            "query": "EXIT",
+            "subjectId": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "container",
+    "active": true,
+    "name": "TOP_BAR",
+    "normalizedPosition": { "x": 0.22, "y": 0.0 },
+    "shape": { "type": "rectangle", "width": 0.78, "height": 0.06 },
+    "shapeColor": { "red": 10, "green": 12, "blue": 18, "alpha": 230 },
+    "textConfig": {
+      "id": "NO_TEXT",
+      "type": "DEFAULT",
+      "color": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+      "bindings": []
+    },
+    "img" : [],
+    "children": [
+      {
+        "type": "label",
+        "active": true,
+        "name": "BUDGET_LABEL",
+        "normalizedPosition": { "x": 0.02, "y": 0.2 },
+        "shape": { "type": "rectangle", "width": 0.25, "height": 0.6 },
+        "shapeColor": { "red": 255, "green": 215, "blue": 0, "alpha": 20 },
+        "textConfig": {
+          "id": "ui.main_menu.BUDGET",
+          "type": "CAPTION",
+          "color": { "red": 255, "green": 215, "blue": 0, "alpha": 255 },
+          "bindings": [
+            {
+              "subjectId": "",
+              "query": "TEAM_BUDGET"
+            }
+          ]
+        },
+        "img" : []
+      }
+    ]
+  }
+]

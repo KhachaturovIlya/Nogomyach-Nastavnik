@@ -1,0 +1,82 @@
+[
+  {
+    "type": "container",
+    "active": true,
+    "name": "PITCH_STADIUM",
+    "normalizedPosition": { "x": 0.0, "y": 0.0 },
+    "shape": { "type": "rectangle", "width": 1.0, "height": 1.0 },
+    "shapeColor": { "red": 34, "green": 139, "blue": 34, "alpha": 255 },
+    "textConfig": {
+      "id": "NO_TEXT",
+      "type": "DEFAULT",
+      "color": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+      "bindings": []
+    },
+    "children": [
+      {
+        "type": "container",
+        "active": true,
+        "name": "SCORE_BOARD",
+        "normalizedPosition": { "x": 0.35, "y": 0.02 },
+        "shape": { "type": "rectangle", "width": 0.3, "height": 0.08 },
+        "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 180 },
+        "textConfig": {
+          "id": "NO_TEXT",
+          "type": "DEFAULT",
+          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+          "bindings": []
+        },
+        "children": [
+          {
+            "type": "label",
+            "active": true,
+            "name": "TIMER_LABEL",
+            "normalizedPosition": { "x": 0.35, "y": 0.0 },
+            "shape": { "type": "rectangle", "width": 0.3, "height": 0.3 },
+            "shapeColor": { "red": 255, "green": 140, "blue": 0, "alpha": 100 },
+            "textConfig": {
+              "id": "ui.game_field.TIMER",
+              "type": "CAPTION",
+              "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+              "bindings": []
+            }
+          },
+          {
+            "type": "label",
+            "active": true,
+            "name": "SCORE_LABEL",
+            "normalizedPosition": { "x": 0.0, "y": 0.4 },
+            "shape": { "type": "rectangle", "width": 1.0, "height": 0.5 },
+            "shapeColor": { "red": 0, "green": 0, "blue": 0, "alpha": 0 },
+            "textConfig": {
+              "id": "ui.game_field.SCORE",
+              "type": "CAPTION",
+              "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+              "bindings": []
+            }
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "active": true,
+        "name": "PAUSE_BUTTON",
+        "normalizedPosition": { "x": 0.88, "y": 0.02 },
+        "shape": { "type": "rectangle", "width": 0.1, "height": 0.05 },
+        "shapeColor": { "red": 50, "green": 50, "blue": 50, "alpha": 200 },
+        "textConfig": {
+          "id": "ui.game_field.PAUSE",
+          "type": "DEFAULT",
+          "color": { "red": 255, "green": 255, "blue": 255, "alpha": 255 },
+          "bindings": []
+        },
+        "clickActions": [
+          {
+            "query" : "LOAD_NEW_SCENE",
+            "subjectId" : "MAIN_MENU"
+          }
+        ]
+      }
+    ]
+  }
+]
