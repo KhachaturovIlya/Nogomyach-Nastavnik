@@ -18,10 +18,6 @@ import model.repoImpls.SwissSystemCup;
 import model.repoInterfaces.*;
 import model.servicesInterfaces.IEntityLoader;
 import model.subclasses.*;
-import presenter.impl.widget.Button;
-import presenter.impl.widget.Container;
-import presenter.impl.widget.DynamicContainer;
-import presenter.impl.widget.Label;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,7 +31,7 @@ import java.util.stream.Stream;
 public class JsonEntityLoader implements IEntityLoader {
 	private ObjectMapper mapper;
 	private Path srcPath;
-	private Map<Nationality, ICountry> countries;
+	private ICountryRepository countryRepo;
 	private ITeamRepository teamRepo;
 	private ITournamentRepository tournamentRepo;
 
@@ -149,6 +145,7 @@ public class JsonEntityLoader implements IEntityLoader {
 		SwissSystemCupRegulationsMixin(
 			@JsonProperty("league phase members")short leaguePhaseMembers,
 			@JsonProperty("league phase matches")short leaguePhaseMatches,
+			@JsonProperty("pots")short pots,
 			@JsonProperty("direct play-off clubs")short directPlayOffClubs,
 			@JsonProperty("indirect play-off clubs")short indirectPlayOffClubs
 		) {}
@@ -217,14 +214,14 @@ public class JsonEntityLoader implements IEntityLoader {
 		}
 	}
 
-	public JsonEntityLoader(Path srcPath, Map<Nationality, ICountry> countries,
+	public JsonEntityLoader(Path srcPath, ICountryRepository countryRepo,
 							ITeamRepository teamRepo, ITournamentRepository tournamentRepo) {
 		mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
 		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
 		this.srcPath = srcPath;
-		this.countries = countries;
+		this.countryRepo = countryRepo;
 		this.teamRepo = teamRepo;
 		this.tournamentRepo = tournamentRepo;
 
@@ -249,7 +246,7 @@ public class JsonEntityLoader implements IEntityLoader {
 			countries.forEach(path -> {
 				try {
 					ICountry country = loadCountry(path);
-					this.countries.put(country.nationality(), country);
+					countryRepo.addCountry(country);
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
