@@ -10,33 +10,33 @@ public class Club implements ITeam {
 	private static final short AMOUNT_OF_NUMBERS = 99;
 	private String name;
 	private Stadium homeStadium;
-    private ICoach headCoach;
+    private Coach headCoach;
 	private List<ISquad> defaultSquads;
     private List<IFootballerProfile> players;
     private int transferBudget;
 	private ArrayList<Boolean> isNumbervalid;
 
 	private boolean isNumberValid(short number) {
-		if (0 >= number || 100 <= number) {
+		if (number <= 0 || number >= 100) {
 			return false;
 		}
 		return isNumbervalid.get(number - 1);
 	}
 
 	private List<Short> invalidNumbers(List<IFootballerProfile> players) {
-		List<Boolean> found = new ArrayList<>(Collections.nCopies(AMOUNT_OF_NUMBERS, true));
+		List<Boolean> found = new ArrayList<>(Collections.nCopies(AMOUNT_OF_NUMBERS + 1, false));
 		List<Short> res = new ArrayList<>();
 		for (var player : players) {
 			if (found.get(player.number()) || 0 >= player.number() || 100 <= player.number()) {
 				res.add(player.number());
 			}
-			found.set(player.number(), true);
+			found.set(player.number() - 1, true);
 		}
 		return res;
 	}
 
 
-    public Club(String name, Stadium homeStadium, ICoach headCoach, List<IFootballerProfile> players, int transferBudget)
+    public Club(String name, Stadium homeStadium, Coach headCoach, List<IFootballerProfile> players, int transferBudget)
 	throws InvalidParameterException {
 		List<Short> invalidNumbers = invalidNumbers(players);
 		if (!invalidNumbers.isEmpty()) {
@@ -67,7 +67,7 @@ public class Club implements ITeam {
     }
 
     @Override
-    public void setHeadCoach(ICoach coach) {
+    public void setHeadCoach(Coach coach) {
         headCoach = coach;
     }
 

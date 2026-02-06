@@ -1,23 +1,20 @@
 package model.subclasses;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class BaseFootballerCharacteristics {
-    private List<Short> _characteristics = new ArrayList<>(FootballerCharacteristicsEnum.cnt);
+    private short[] characteristics = new short[FootballerCharacteristicsEnum.cnt];
 
 	private boolean isCharacteristicValid(short characteristic) {
-		return 0 >= characteristic && characteristic <= 100;
+		return characteristic >= 0 && characteristic <= 1000;
 	}
 
-	public BaseFootballerCharacteristics(ArrayList<Short> characteristics) {
-		_characteristics = characteristics;
+	public BaseFootballerCharacteristics(short[] characteristics) {
+		this.characteristics = characteristics;
 	}
 
 	public BaseFootballerCharacteristics(Map<String, Short> characteristics)
@@ -26,22 +23,22 @@ public class BaseFootballerCharacteristics {
 			if (!isCharacteristicValid(value)) {
 				throw new InvalidParameterException("invalid characteristic: " + key + " - " + value);
 			}
-			int pos = FootballerCharacteristicsEnum.valueOf(key).array_pos;
-			_characteristics.set(pos, value);
+			int pos = FootballerCharacteristicsEnum.fromString(key).arrayPos;
+			this.characteristics[pos] = value;
 		});
 	}
 
     public short characteristic(FootballerCharacteristicsEnum characteristic) {
-        return _characteristics.get(characteristic.array_pos);
+        return this.characteristics[characteristic.arrayPos];
     }
 
     public void increaseCharacteristic(FootballerCharacteristicsEnum characteristic, short add) {
-		short currentValue = _characteristics.get(characteristic.array_pos);
-		_characteristics.set(characteristic.array_pos, (short) Math.min(currentValue + add, 100));
+		short currentValue = this.characteristics[characteristic.arrayPos];
+		this.characteristics[characteristic.arrayPos] = (short) Math.min(currentValue + add, 100);
     }
 
     public void decreaseCharacteristic(FootballerCharacteristicsEnum characteristic, short loss) {
-		short currentValue = _characteristics.get(characteristic.array_pos);
-		_characteristics.set(characteristic.array_pos, (short) Math.max(currentValue - loss, 0));
+		short currentValue = this.characteristics[characteristic.arrayPos];
+		this.characteristics[characteristic.arrayPos] = (short) Math.max(currentValue - loss, 0);
     }
 }

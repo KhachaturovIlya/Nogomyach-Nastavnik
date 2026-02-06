@@ -34,12 +34,21 @@ public enum FootballerCharacteristicsEnum {
     PLAYING_OUT(22, "playing out"),
     CROSS_INTERCEPTION(23, "cross interception");
 
-    public final int array_pos;
-    private final String string_version;
+    public final int arrayPos;
+    private final String stringVersion;
 
     public static final short cnt = 24;
     FootballerCharacteristicsEnum(int pos, String stringVersion) {
-        array_pos = pos;
-        string_version = stringVersion;
+        arrayPos = pos;
+        this.stringVersion = stringVersion;
+    }
+
+    public static FootballerCharacteristicsEnum fromString(String name) {
+        for (FootballerCharacteristicsEnum b : FootballerCharacteristicsEnum.values()) {
+            if (b.stringVersion.equalsIgnoreCase(name)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("No constant with text " + name + " found");
     }
 }

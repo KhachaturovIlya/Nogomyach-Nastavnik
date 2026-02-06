@@ -12,12 +12,13 @@
   "players":
   [
   {
+    "type" : "default",
     "name": "Petr Zalupkin",
     "nationality": "Russia",
     "prefered roles": [
       "CB"
     ],
-    "number": 99,
+    "number": 50,
     "date of birth": "1923-01-01",
     "transfer cost": 10,
     "characteristics": {
@@ -48,13 +49,13 @@
     }
   },
   {
+    "type" : "default",
     "name": "Viktor Korneplod",
-    "club": "Enisey Krasnoyarsk",
     "nationality": "Russia",
     "prefered roles": [
       "ST"
     ],
-    "number": 98,
+    "number": 77,
     "date of birth": "1923-02-11",
     "transfer cost": 10,
     "characteristics": {

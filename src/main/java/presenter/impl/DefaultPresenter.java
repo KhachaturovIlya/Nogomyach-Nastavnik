@@ -1,5 +1,6 @@
 package presenter.impl;
 
+import model.repoInterfaces.ITeamRepository;
 import presenter.ILangService;
 import presenter.IPresenter;
 import presenter.Scene;
@@ -19,6 +20,7 @@ public class DefaultPresenter implements IPresenter {
     private boolean cycleState = true;
 
     private final IView view;
+    private final ITeamRepository repository;
 
     private final Map<String, Map<Integer, Widget>> scenes;
     private Map<Integer, Widget> widgets = null;
@@ -265,8 +267,9 @@ public class DefaultPresenter implements IPresenter {
 
     // Public methods:
 
-    public DefaultPresenter(IView view, Map<String, Map<Integer, Widget>> scenes, ILangService langService) {
+    public DefaultPresenter(IView view, ITeamRepository teamRepository, Map<String, Map<Integer, Widget>> scenes, ILangService langService) {
         this.view = view;
+        this.repository = teamRepository;
 
         this.scenes = scenes;
 

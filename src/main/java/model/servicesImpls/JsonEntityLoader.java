@@ -1,16 +1,14 @@
 package model.servicesImpls;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import model.entityImpls.Club;
 import model.entityImpls.Coach;
 import model.entityImpls.FootballerProfile;
-import model.entityInterfaces.ICoach;
 import model.entityInterfaces.IFootballerProfile;
 import model.entityInterfaces.ITeam;
 import model.repoImpls.Country;
@@ -20,6 +18,10 @@ import model.repoImpls.SwissSystemCup;
 import model.repoInterfaces.*;
 import model.servicesInterfaces.IEntityLoader;
 import model.subclasses.*;
+import presenter.impl.widget.Button;
+import presenter.impl.widget.Container;
+import presenter.impl.widget.DynamicContainer;
+import presenter.impl.widget.Label;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,6 +47,16 @@ public class JsonEntityLoader implements IEntityLoader {
 		) {}
 	}
 
+	@JsonTypeInfo(
+		use = JsonTypeInfo.Id.NAME,
+		include = JsonTypeInfo.As.PROPERTY,
+		property = "type"
+	)
+	@JsonSubTypes({
+		@JsonSubTypes.Type(value = FootballerProfile.class, name = "default")
+	})
+	public static abstract class IFootballerProfileMixin {}
+
 	public static abstract class FootballerProfileMixin {
 		@JsonCreator
 		FootballerProfileMixin(
@@ -53,8 +65,19 @@ public class JsonEntityLoader implements IEntityLoader {
 			@JsonProperty("prefered roles")List<Role> preferedRoles,
 			@JsonProperty("date of birth")LocalDate dateOfBirth,
 			@JsonProperty("number")short number,
-			@JsonProperty("transfer cost")int transferCost
+			@JsonProperty("transfer cost")int transferCost,
+			@JsonProperty("characteristics") BaseFootballerCharacteristics characteristics
 		) {}
+	}
+
+	public static abstract class FootballerCharacteristicsEnumMixin {
+		@JsonValue
+		abstract String getStringVersion();
+
+		@JsonCreator
+		static FootballerCharacteristicsEnum fromString(String value) {
+			return null;
+		}
 	}
 
 	public static abstract class CoachMixin {
@@ -79,7 +102,7 @@ public class JsonEntityLoader implements IEntityLoader {
 		ClubMixin(
 			@JsonProperty("name")String name,
 			@JsonProperty("home stadium")Stadium homeStadium,
-			@JsonProperty("head coach")ICoach headCoach,
+			@JsonProperty("head coach")Coach headCoach,
 			@JsonProperty("players")List<IFootballerProfile> players,
 			@JsonProperty("transfer budget")int transferBudget
 		) {}
@@ -111,6 +134,16 @@ public class JsonEntityLoader implements IEntityLoader {
 		) {}
 	}
 
+	public static abstract class LeagueRegulationsMixin {
+		@JsonCreator
+		LeagueRegulationsMixin(
+			@JsonProperty("amount of teams") short amountOfTeams,
+			@JsonProperty("teams to promote") short teamsToPromote,
+			@JsonProperty("teams to eliminate") short teamsToEliminate
+		) {}
+	}
+
+
 	public static abstract class SwissSystemCupRegulationsMixin {
 		@JsonCreator
 		SwissSystemCupRegulationsMixin(
@@ -141,11 +174,11 @@ public class JsonEntityLoader implements IEntityLoader {
 
 	private INationalLeague loadLeague(Path leagueConfigPath) throws IOException {
 		LeagueRegulations regulations = mapper.readValue(
-			srcPath.resolve(leagueConfigPath + "regulations.json").toFile(),
+			srcPath.resolve(leagueConfigPath + "/regulations.json").toFile(),
 			new TypeReference<>() {});
 		INationalLeague league = new NationalLeague(leagueConfigPath.getFileName().toString(), regulations);
 
-		try(Stream<Path> clubs = Files.list(srcPath.resolve(leagueConfigPath + "clubs"))) {
+		try(Stream<Path> clubs = Files.list(srcPath.resolve(leagueConfigPath + "/clubs"))) {
 			clubs.forEach(club -> {
 				try {
 					String team = loadClub(club);
@@ -184,13 +217,20 @@ public class JsonEntityLoader implements IEntityLoader {
 		}
 	}
 
-	public JsonEntityLoader(Path srcPath, Map<Nationality, ICountry> countries, ITeamRepository teamRepo) {
+	public JsonEntityLoader(Path srcPath, Map<Nationality, ICountry> countries,
+							ITeamRepository teamRepo, ITournamentRepository tournamentRepo) {
 		mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
 		this.srcPath = srcPath;
 		this.countries = countries;
 		this.teamRepo = teamRepo;
+		this.tournamentRepo = tournamentRepo;
 
+		mapper.addMixIn(FootballerCharacteristicsEnum.class, FootballerCharacteristicsEnumMixin.class);
 		mapper.addMixIn(BaseFootballerCharacteristics.class, FootballerCharacteristicsMixin.class);
+		mapper.addMixIn(IFootballerProfile.class, IFootballerProfileMixin.class);
 		mapper.addMixIn(FootballerProfile.class, FootballerProfileMixin.class);
 		mapper.addMixIn(Coach.class, CoachMixin.class);
 		mapper.addMixIn(Stadium.class, StadiumMixin.class);
@@ -198,6 +238,7 @@ public class JsonEntityLoader implements IEntityLoader {
 		mapper.addMixIn(ITournament.class, TournamentMixin.class);
 		mapper.addMixIn(DefaultCupRegulations.class, DefaultCupRegulationsMixin.class);
 		mapper.addMixIn(DefaultCup.class, DefaultCupMixin.class);
+		mapper.addMixIn(LeagueRegulations.class, LeagueRegulationsMixin.class);
 		mapper.addMixIn(SwissSystemCupRegulations.class, SwissSystemCupRegulationsMixin.class);
 		mapper.addMixIn(SwissSystemCup.class, SwissSystemCupMixin.class);
 	}
