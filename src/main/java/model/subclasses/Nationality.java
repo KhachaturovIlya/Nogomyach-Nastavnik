@@ -1,5 +1,7 @@
 package model.subclasses;
 
+import java.security.InvalidParameterException;
+
 public enum Nationality {
     ANGOLA("Angola"),
     ALBANIA("Albania"),
@@ -14,7 +16,7 @@ public enum Nationality {
     BAHRAIN("Bahrain"),
     BANGLADESH("Bangladesh"),
     BARBADOS("Barbados"),
-    Belarus("Belarus"),
+    BELARUS("Belarus"),
     BELGIUM("Belgium"),
     BELIZE("Belize"),
     BENIN("Benin"),
@@ -141,7 +143,7 @@ public enum Nationality {
     PORTUGAL("Portugal"),
     QATAR("Qatar"),
     ROMANIA("Romania"),
-    Russia("Russia"),
+    RUSSIA("Russia"),
     RWANDA("Rwanda"),
     SAINT_KITTS_AND_NEVIS("Saint Kitts and Nevis"),
     SAINT_LUCIA("Saint Lucia"),
@@ -195,9 +197,18 @@ public enum Nationality {
     ZAMBIA("Zambia"),
     ZIMBABWE("Zimbabwe");
 
-    public final String stringVerison;
+    public final String value;
 
-    Nationality(String stringVerison) {
-        this.stringVerison = stringVerison;
+    Nationality(String value) {
+        this.value = value;
     }
+
+	public static Nationality fromString(String value) {
+		for (Nationality n : Nationality.values()) {
+			if (n.value.equals(value)) {
+				return n;
+			}
+		}
+		throw new InvalidParameterException("unknown nationality: '" + value + "'");
+	}
 }
