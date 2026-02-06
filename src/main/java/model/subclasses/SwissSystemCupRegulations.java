@@ -2,38 +2,45 @@ package model.subclasses;
 
 
 public class SwissSystemCupRegulations implements IRegulations {
-	private short _leaguePhaseMembers;
-	private short _leaguePhaseMatches;
-	private short _directPlayOffClubs;
-	private short _indirectPlayOffClubs;
+	private short leaguePhaseMembers;
+	private short leaguePhaseMatches;
+	private short pots;
+	private short directPlayOffClubs;
+	private short indirectPlayOffClubs;
 
 
-	public SwissSystemCupRegulations(short leaguePhaseMembers, short leaguePhaseMatches,
+
+	public SwissSystemCupRegulations(short leaguePhaseMembers, short leaguePhaseMatches, short pots,
 	short directPlayOffClubs, short indirectPlayOffClubs) {
-		_leaguePhaseMembers = leaguePhaseMembers;
-		_leaguePhaseMatches = leaguePhaseMatches;
-		_directPlayOffClubs = directPlayOffClubs;
-		_indirectPlayOffClubs = indirectPlayOffClubs;
+		this.leaguePhaseMembers = leaguePhaseMembers;
+		this.leaguePhaseMatches = leaguePhaseMatches;
+		this.pots = pots;
+		this.directPlayOffClubs = directPlayOffClubs;
+		this.indirectPlayOffClubs = indirectPlayOffClubs;
 	}
 
 	@Override
 	public short amountOfTeams() {
-		return _leaguePhaseMembers;
+		return leaguePhaseMembers;
 	}
 
 	public short leaguePhaseMatches() {
-		return _leaguePhaseMatches;
+		return leaguePhaseMatches;
+	}
+
+	public short pots() {
+		return pots;
 	}
 
 	public short directPlayOffClubs() {
-		return _directPlayOffClubs;
+		return directPlayOffClubs;
 	}
 
 	public short indirectPlayOffClubs() {
-		return _indirectPlayOffClubs;
+		return indirectPlayOffClubs;
 	}
 
 	public short playOfParticipantsNumber() {
-		return (short) (_directPlayOffClubs + _indirectPlayOffClubs / 2);
+		return (short) (directPlayOffClubs + indirectPlayOffClubs / 2);
 	}
 }
