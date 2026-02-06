@@ -13,8 +13,9 @@ import java.util.List;
 public class DefaultCup implements ITournament {
 	private final String name;
 	private DefaultCupRegulations regulations;
+	private short currentStage;
 	private List<String> teams;
-	private List<MatchNote> pairsAfterDraw;
+	private List<List<MatchNote>> pairsAfterDraw;
 
 
 	public DefaultCup(String name, DefaultCupRegulations regulations, List<String> teams) throws InvalidParameterException {
@@ -27,7 +28,7 @@ public class DefaultCup implements ITournament {
 		this.name = name;
 		this.regulations = regulations;
 		this.teams = teams;
-		pairsAfterDraw = new ArrayList<>(regulations.amountOfTeams() / 2);
+		pairsAfterDraw = new ArrayList<>((int) (Math.log(regulations.amountOfTeams()) / Math.log(2)));
 	}
 
 	@Override
@@ -57,12 +58,12 @@ public class DefaultCup implements ITournament {
 
 	@Override
 	public List<MatchNote> nextStageMatches() {
-		return pairsAfterDraw;
+		return pairsAfterDraw.get(currentStage);
 	}
 
 	@Override
 	public List<MatchNote> allTeamMatches(String team) {
-		return List.of(pairsAfterDraw.stream().filter(p -> p.containsTeam(team)).findAny().get());
+		return List.of(pairsAfterDraw.get(currentStage).stream().filter(p -> p.containsTeam(team)).findAny().get());
 	}
 
 	@Override
@@ -70,12 +71,16 @@ public class DefaultCup implements ITournament {
 		return name;
 	}
 
-	public List<MatchNote> pairsAfterDraw() {
-		return pairsAfterDraw;
+	public short currentStage() {
+		return currentStage;
+	}
+
+	public void increaseStage() {
+		++currentStage;
 	}
 
 	public void setPairsAfterDraw(List<MatchNote> pairsAfterDraw) {
-		this.pairsAfterDraw = pairsAfterDraw;
+		this.pairsAfterDraw.add(pairsAfterDraw);
 	}
 
 	public void setTeams(List<String> teams) {
