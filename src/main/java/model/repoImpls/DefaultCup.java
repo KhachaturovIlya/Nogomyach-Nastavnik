@@ -1,5 +1,6 @@
 package model.repoImpls;
 
+import model.repoInterfaces.ICup;
 import model.repoInterfaces.ITournament;
 import model.subclasses.DefaultCupRegulations;
 import model.subclasses.IRegulations;
@@ -10,7 +11,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultCup implements ITournament {
+public class DefaultCup implements ICup {
 	private final String name;
 	private DefaultCupRegulations regulations;
 	private short currentStage;
@@ -67,22 +68,31 @@ public class DefaultCup implements ITournament {
 	}
 
 	@Override
+	public List<MatchNote> currentStageMatches() {
+		return pairsAfterDraw.get(currentStage);
+	}
+
+	@Override
 	public String name() {
 		return name;
 	}
 
+	@Override
 	public short currentStage() {
 		return currentStage;
 	}
 
+	@Override
 	public void increaseStage() {
 		++currentStage;
 	}
 
+	@Override
 	public void setPairsAfterDraw(List<MatchNote> pairsAfterDraw) {
 		this.pairsAfterDraw.add(pairsAfterDraw);
 	}
 
+	@Override
 	public void setTeams(List<String> teams) {
 		if (teams.size() != regulations.amountOfTeams()) {
 			throw new InvalidParameterException("invalid number of teams (cup - '" + name + "', setTeams)");
