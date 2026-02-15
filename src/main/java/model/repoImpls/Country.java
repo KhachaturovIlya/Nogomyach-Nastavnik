@@ -8,36 +8,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Country implements ICountry {
-	private Nationality _country;
-	private List<INationalLeague> _leagues = new ArrayList<>();
+	private Nationality country;
+	private List<INationalLeague> leagues = new ArrayList<>();
 
 
 
 	public Country(Nationality country) {
-		_country = country;
+		this.country = country;
 	}
 
 	public Country(String country) {
-		_country = Nationality.valueOf(country);
+		this.country = Nationality.fromString(country);
 	}
 
 	@Override
 	public Nationality nationality() {
-		return _country;
+		return country;
 	}
 
 	@Override
 	public INationalLeague premierLeague() {
-		return _leagues.getFirst();
+		return leagues.getFirst();
 	}
 
 	@Override
 	public INationalLeague divisionByNumber(short number) {
-		return _leagues.get(number);
+		return leagues.get(number);
 	}
 
 	@Override
 	public void addLeague(INationalLeague league) {
-		_leagues.add(league);
+		leagues.add(league);
 	}
 }

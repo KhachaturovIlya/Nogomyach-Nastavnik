@@ -1,3 +1,4 @@
+import model.repoImpls.CountryRepository;
 import model.repoImpls.TeamRepository;
 import model.repoImpls.TournamentRepository;
 import model.repoInterfaces.ITeamRepository;
@@ -38,7 +39,7 @@ public class Main {
 
         ITeamRepository repository = new TeamRepository();
 
-        JsonEntityLoader loader = new JsonEntityLoader(Path.of(configsURL.toURI()), new HashMap<>(), repository, new TournamentRepository());
+        JsonEntityLoader loader = new JsonEntityLoader(Path.of(configsURL.toURI()), new CountryRepository(), repository, new TournamentRepository());
 
         loader.loadClubsAndLeagues(Path.of("teams"));
 

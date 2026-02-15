@@ -5,40 +5,108 @@ import model.repoInterfaces.ITournament;
 import model.servicesInterfaces.IDrawService;
 import model.subclasses.MatchNote;
 import model.subclasses.SwissSystemCupRegulations;
+import shared.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SwissCupDrawService implements IDrawService {
+	private ISwissSystemCup cup;
+	private SwissSystemCupRegulations regulations;
+	private List<String> teams;
+	private Map<String, List<MatchNote>> leaguePhaseOpponents;
+	private Set<Integer> occupiedTeamIndexes;
+	private int potSize;
+	private int opponentsFromEachPot;
 
-	private void holdLeagueDraw(ISwissSystemCup cup) {
-		var regulations = (SwissSystemCupRegulations) cup.regulations();
-		Map<String, List<MatchNote>> leaguePhaseOpponents = new TreeMap<>();
+	private void holdTeamLegaueDraw(int teamIndex) {
+		for (int tour = 0; tour < regulations.leaguePhaseMatches(); ++tour) {
+			if (null != leaguePhaseOpponents.get(teams.get(teamIndex))) {
+				continue;
+			}
+
+			int opponentIndex;
+			do {
+				opponentIndex = ThreadLocalRandom.current().nextInt(
+						teamIndex + 1, (tour / opponentsFromEachPot + 1) * potSize);
+			} while (occupiedTeamIndexes.contains(opponentIndex) &&
+					null != leaguePhaseOpponents.get(teams.get(opponentIndex)).get(tour));
+
+			MatchNote match;
+			if (0 == tour % 2) {
+				match = new MatchNote(teams.get(teamIndex), teams.get(opponentIndex));
+			} else {
+				match = new MatchNote(teams.get(opponentIndex), teams.get(teamIndex));
+			}
+			leaguePhaseOpponents.get(teams.get(teamIndex)).add(tour, match);
+			leaguePhaseOpponents.get(teams.get(opponentIndex)).add(tour, match);
+			occupiedTeamIndexes.add(opponentIndex);
+		}
+		occupiedTeamIndexes.clear();
+	}
+
+	private List<String> winners(List<Pair<MatchNote>> matches) {
+		List<String> res = new ArrayList<>(matches.size());
+		matches.forEach(pair -> {
+			short goalsX = (short) (pair.x.score().x + pair.y.score().x);
+			short goalsY = (short) (pair.x.score().y + pair.y.score().y);
+			String winner = goalsX > goalsY ? pair.x.homeTeam() : pair.x.awayTeam();
+			res.add(winner);
+		});
+		return res;
+	}
+
+	private void holdLeagueDraw() {
+		regulations = (SwissSystemCupRegulations) cup.regulations();
+		potSize = regulations.amountOfTeams() / regulations.pots();
+		opponentsFromEachPot = regulations.leaguePhaseMatches() / regulations.pots();
+		leaguePhaseOpponents = new TreeMap<>();
+		occupiedTeamIndexes = new HashSet<>(regulations.leaguePhaseMatches());
 		leaguePhaseOpponents.forEach((_, value) ->
-			value = new ArrayList<>(regulations.leaguePhaseMatches()));
+			value = new ArrayList<>(Collections.nCopies(regulations.leaguePhaseMatches(), null))
+		);
 
+		for (int i = 0; i < teams.size(); ++i) {
+			holdTeamLegaueDraw(i);
+		}
 
+		cup.setLeaguePhaseOpponents(leaguePhaseOpponents);
 	}
 
-	private void holdIndirectPlayOffDraw(ISwissSystemCup cup) {
+	private void holdIndirectPlayOffDraw() {
+		List<Pair<MatchNote>> pairs = new ArrayList<>(regulations.indirectPlayOffClubs());
+		occupiedTeamIndexes.clear();
 
+		for (int i = 0; i < regulations.directPlayOffClubs(); ++i) {
+			int opponentIndex;
+			do {
+				opponentIndex = ThreadLocalRandom.current().nextInt(
+				2 * regulations.directPlayOffClubs(), regulations.indirectPlayOffClubs() + regulations.directPlayOffClubs());
+			} while (occupiedTeamIndexes.contains(opponentIndex));
+
+			MatchNote firstMatch = new MatchNote(teams.get(opponentIndex), teams.get(i));
+			MatchNote secondMatch = new MatchNote(teams.get(i), teams.get(opponentIndex));
+			pairs.add(new Pair<>(firstMatch, secondMatch));
+		}
+
+		cup.setIndirectPlayOffPairs(pairs);
 	}
 
-	private void holdPlayOffDraw(ISwissSystemCup cup) {
-
+	private void holdPlayOffDraw() {
+		//List<String> teams = winners();
 	}
 
 	@Override
 	public void holdADraw(ITournament tournament) {
-		var cup = (ISwissSystemCup) tournament;
-		if (cup.currentTour() == 1) {
-			holdLeagueDraw(cup);
-		} else if (cup.currentTour() == 9) {
-			holdIndirectPlayOffDraw(cup);
+		cup = (ISwissSystemCup) tournament;
+		teams = cup.teams();
+
+		if (1 == cup.currentTour()) {
+			holdLeagueDraw();
+		} else if (regulations.leaguePhaseMatches() + 1 == cup.currentTour()) {
+			holdIndirectPlayOffDraw();
 		} else {
-			holdPlayOffDraw(cup);
+			holdPlayOffDraw();
 		}
 	}
 }

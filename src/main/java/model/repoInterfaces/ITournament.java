@@ -13,4 +13,5 @@ public interface ITournament extends IHasName {
 	IRegulations regulations();
 	List<MatchNote> nextStageMatches();
 	List<MatchNote> allTeamMatches(String team);
+	List<MatchNote> currentStageMatches();
 }

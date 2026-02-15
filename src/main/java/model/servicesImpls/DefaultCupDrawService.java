@@ -1,6 +1,6 @@
 package model.servicesImpls;
 
-import model.repoImpls.DefaultCup;
+import model.repoInterfaces.ICup;
 import model.repoInterfaces.ITournament;
 import model.servicesInterfaces.IDrawService;
 import model.subclasses.MatchNote;
@@ -12,9 +12,18 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DefaultCupDrawService implements IDrawService {
+	private List<String> winners(List<MatchNote> matches) {
+		List<String> res = new ArrayList<>(matches.size());
+		matches.forEach(match -> {
+			String winner = match.score().x > match.score().y ? match.homeTeam() : match.awayTeam();
+			res.add(winner);
+		});
+		return res;
+	}
+
 	@Override
 	public void holdADraw(ITournament tournament) {
-		List<String> teams = tournament.teams();
+		List<String> teams = winners(tournament.currentStageMatches());
 		int size = teams.size();
 		List<MatchNote> pairs = new ArrayList<>(size / 2);
 		Set<Integer> occupiedTeamsIndexes = new HashSet<>(size);
@@ -28,7 +37,7 @@ public class DefaultCupDrawService implements IDrawService {
 			pairs.add(new MatchNote(teams.get(i), teams.get(opponentIndex)));
 			occupiedTeamsIndexes.add(opponentIndex);
 		}
-		var cup = (DefaultCup) tournament;
+		var cup = (ICup) tournament;
 		cup.setPairsAfterDraw(pairs);
 	}
 }

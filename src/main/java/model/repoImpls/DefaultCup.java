@@ -1,5 +1,6 @@
 package model.repoImpls;
 
+import model.repoInterfaces.ICup;
 import model.repoInterfaces.ITournament;
 import model.subclasses.DefaultCupRegulations;
 import model.subclasses.IRegulations;
@@ -10,11 +11,12 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultCup implements ITournament {
+public class DefaultCup implements ICup {
 	private final String name;
 	private DefaultCupRegulations regulations;
+	private short currentStage;
 	private List<String> teams;
-	private List<MatchNote> pairsAfterDraw;
+	private List<List<MatchNote>> pairsAfterDraw;
 
 
 	public DefaultCup(String name, DefaultCupRegulations regulations, List<String> teams) throws InvalidParameterException {
@@ -27,7 +29,7 @@ public class DefaultCup implements ITournament {
 		this.name = name;
 		this.regulations = regulations;
 		this.teams = teams;
-		pairsAfterDraw = new ArrayList<>(regulations.amountOfTeams() / 2);
+		pairsAfterDraw = new ArrayList<>((int) (Math.log(regulations.amountOfTeams()) / Math.log(2)));
 	}
 
 	@Override
@@ -57,12 +59,17 @@ public class DefaultCup implements ITournament {
 
 	@Override
 	public List<MatchNote> nextStageMatches() {
-		return pairsAfterDraw;
+		return pairsAfterDraw.get(currentStage);
 	}
 
 	@Override
 	public List<MatchNote> allTeamMatches(String team) {
-		return List.of(pairsAfterDraw.stream().filter(p -> p.containsTeam(team)).findAny().get());
+		return List.of(pairsAfterDraw.get(currentStage).stream().filter(p -> p.containsTeam(team)).findAny().get());
+	}
+
+	@Override
+	public List<MatchNote> currentStageMatches() {
+		return pairsAfterDraw.get(currentStage);
 	}
 
 	@Override
@@ -70,14 +77,22 @@ public class DefaultCup implements ITournament {
 		return name;
 	}
 
-	public List<MatchNote> pairsAfterDraw() {
-		return pairsAfterDraw;
+	@Override
+	public short currentStage() {
+		return currentStage;
 	}
 
+	@Override
+	public void increaseStage() {
+		++currentStage;
+	}
+
+	@Override
 	public void setPairsAfterDraw(List<MatchNote> pairsAfterDraw) {
-		this.pairsAfterDraw = pairsAfterDraw;
+		this.pairsAfterDraw.add(pairsAfterDraw);
 	}
 
+	@Override
 	public void setTeams(List<String> teams) {
 		if (teams.size() != regulations.amountOfTeams()) {
 			throw new InvalidParameterException("invalid number of teams (cup - '" + name + "', setTeams)");
