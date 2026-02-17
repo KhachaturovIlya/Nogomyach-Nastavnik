@@ -1,8 +1,8 @@
-import model.repoImpls.CountryRepository;
-import model.repoImpls.TeamRepository;
-import model.repoImpls.TournamentRepository;
-import model.repoInterfaces.ITeamRepository;
-import model.servicesImpls.JsonEntityLoader;
+import model.repository.impl.CountryRepository;
+import model.repository.impl.TeamRepository;
+import model.repository.impl.TournamentRepository;
+import model.repository.ITeamRepository;
+import model.service.loading.impl.JsonEntityLoader;
 import presenter.ILangService;
 import presenter.IPresenter;
 import presenter.impl.JsonLangService;

@@ -1,6 +1,6 @@
 package presenter.impl;
 
-import model.repoInterfaces.ITeamRepository;
+import model.repository.ITeamRepository;
 import presenter.ILangService;
 import presenter.IPresenter;
 import presenter.Scene;
