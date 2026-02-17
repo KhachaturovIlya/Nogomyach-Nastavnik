@@ -1,5 +1,9 @@
 package presenter.impl;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import model.repoInterfaces.ITeamRepository;
 import presenter.ILangService;
 import presenter.IPresenter;
@@ -14,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class DefaultPresenter implements IPresenter {
     // Fields:
 
@@ -22,13 +27,12 @@ public class DefaultPresenter implements IPresenter {
     private final IView view;
     private final ITeamRepository repository;
 
-    private final Map<String, Map<Integer, Widget>> scenes;
-    private Map<Integer, Widget> widgets = null;
-
     private final CommandLibrary commandLibrary;
     private final ILangService langService;
 
-    private float volume = -10.f;
+    @Getter private final Map<String, Map<Integer, Widget>> scenes;
+    @Getter private Map<Integer, Widget> widgets = null;
+    @Getter @Setter private float volume = -10.f;
 
     // Private DTO methods:
 
@@ -153,18 +157,6 @@ public class DefaultPresenter implements IPresenter {
             new Vector2(0, 0), 1.0, 1.0);
 
         return actionWidgetDTOs;
-    }
-
-    public float getVolume() {
-        return volume;
-    }
-
-    public void setVolume(float volume) {
-        this.volume = volume;
-    }
-
-    public Map<Integer, Widget> getWidgets() {
-        return widgets;
     }
 
     public void loadNewScene(String sceneName) {
