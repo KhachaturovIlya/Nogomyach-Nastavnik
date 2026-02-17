@@ -1,5 +1,6 @@
 package model.service.squad;
 
+import model.formation.Formation;
 import model.squad.ISquad;
 import model.enums.Role;
 
@@ -13,9 +14,9 @@ public interface ISquadService {
     void replacePlayerInStartingXI(short numberOld, short numberNew);
     void replacePlayerOnBench(short numberOld, short numberNew);
     void swapPlayersInStartingXI(short numberX, short numberY);
-    void setFormation(IFormation formation);
-    Map<Short, Role> startingXI();
-    ArrayList<Short> bench();
+    void setFormation(Formation formation);
+    Map<Short, Role> getStartingXI();
+    ArrayList<Short> getBench();
     boolean isFormationSet();
     boolean isTeamReady();
 	ISquad result();
