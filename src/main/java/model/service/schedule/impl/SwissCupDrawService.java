@@ -20,7 +20,7 @@ public class SwissCupDrawService implements IDrawService {
 	private int opponentsFromEachPot;
 
 	private void holdTeamLegaueDraw(int teamIndex) {
-		for (int tour = 0; tour < regulations.leaguePhaseMatches(); ++tour) {
+		for (int tour = 0; tour < regulations.getLeaguePhaseMatches(); ++tour) {
 			if (null != leaguePhaseOpponents.get(teams.get(teamIndex))) {
 				continue;
 			}
@@ -58,12 +58,12 @@ public class SwissCupDrawService implements IDrawService {
 
 	private void holdLeagueDraw() {
 		regulations = (SwissSystemCupRegulations) cup.getRegulations();
-		potSize = regulations.getAmountOfTeams() / regulations.pots();
-		opponentsFromEachPot = regulations.leaguePhaseMatches() / regulations.pots();
+		potSize = regulations.getAmountOfTeams() / regulations.getPots();
+		opponentsFromEachPot = regulations.getLeaguePhaseMatches() / regulations.getPots();
 		leaguePhaseOpponents = new TreeMap<>();
-		occupiedTeamIndexes = new HashSet<>(regulations.leaguePhaseMatches());
+		occupiedTeamIndexes = new HashSet<>(regulations.getLeaguePhaseMatches());
 		leaguePhaseOpponents.forEach((_, value) ->
-			value = new ArrayList<>(Collections.nCopies(regulations.leaguePhaseMatches(), null))
+			value = new ArrayList<>(Collections.nCopies(regulations.getLeaguePhaseMatches(), null))
 		);
 
 		for (int i = 0; i < teams.size(); ++i) {
@@ -74,14 +74,14 @@ public class SwissCupDrawService implements IDrawService {
 	}
 
 	private void holdIndirectPlayOffDraw() {
-		List<Pair<MatchNote>> pairs = new ArrayList<>(regulations.indirectPlayOffClubs());
+		List<Pair<MatchNote>> pairs = new ArrayList<>(regulations.getIndirectPlayOffClubs());
 		occupiedTeamIndexes.clear();
 
-		for (int i = 0; i < regulations.directPlayOffClubs(); ++i) {
+		for (int i = 0; i < regulations.getDirectPlayOffClubs(); ++i) {
 			int opponentIndex;
 			do {
 				opponentIndex = ThreadLocalRandom.current().nextInt(
-				2 * regulations.directPlayOffClubs(), regulations.indirectPlayOffClubs() + regulations.directPlayOffClubs());
+				2 * regulations.getDirectPlayOffClubs(), regulations.getIndirectPlayOffClubs() + regulations.getDirectPlayOffClubs());
 			} while (occupiedTeamIndexes.contains(opponentIndex));
 
 			MatchNote firstMatch = new MatchNote(teams.get(opponentIndex), teams.get(i));
@@ -110,7 +110,7 @@ public class SwissCupDrawService implements IDrawService {
 
 		if (1 == cup.getCurrentTour()) {
 			holdLeagueDraw();
-		} else if (regulations.leaguePhaseMatches() + 1 == cup.getCurrentTour()) {
+		} else if (regulations.getLeaguePhaseMatches() + 1 == cup.getCurrentTour()) {
 			holdIndirectPlayOffDraw();
 		} else {
 			holdPlayOffDraw();
