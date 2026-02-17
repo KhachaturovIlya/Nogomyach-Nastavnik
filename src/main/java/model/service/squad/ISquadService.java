@@ -1,6 +1,5 @@
 package model.service.squad;
 
-import model.formation.IFormation;
 import model.squad.ISquad;
 import model.enums.Role;
 

@@ -30,10 +30,10 @@ public class Club implements ITeam {
 		List<Boolean> found = new ArrayList<>(Collections.nCopies(AMOUNT_OF_NUMBERS + 1, false));
 		List<Short> res = new ArrayList<>();
 		for (var player : players) {
-			if (found.get(player.number()) || 0 >= player.number() || 100 <= player.number()) {
-				res.add(player.number());
+			if (found.get(player.getNumber()) || 0 >= player.getNumber() || 100 <= player.getNumber()) {
+				res.add(player.getNumber());
 			}
-			found.set(player.number() - 1, true);
+			found.set(player.getNumber() - 1, true);
 		}
 		return res;
 	}
@@ -52,19 +52,19 @@ public class Club implements ITeam {
 		this.players = players;
         this.transferBudget = transferBudget;
 		this.players.forEach(p -> {
-			isNumbervalid.set(p.number(), false);
+			isNumbervalid.set(p.getNumber(), false);
 		});
     }
 
     @Override
-    public String name() {
+    public String getName() {
         return name;
     }
 
     @Override
     public void addPlayer(IFootballerProfile player) throws InvalidParameterException {
-		if (!isNumberValid(player.number())) {
-			throw new InvalidParameterException("invalid number: " + player.number());
+		if (!isNumberValid(player.getNumber())) {
+			throw new InvalidParameterException("invalid number: " + player.getNumber());
 		}
         players.add(player);
     }
@@ -91,7 +91,7 @@ public class Club implements ITeam {
 
     @Override
     public Optional<IFootballerProfile> findPlayerByNumber(short number) {
-        return players.stream().filter(p -> p.number() == number).findAny();
+        return players.stream().filter(p -> p.getNumber() == number).findAny();
     }
 
 	@Override

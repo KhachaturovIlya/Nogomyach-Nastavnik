@@ -1,5 +1,6 @@
 package model.country.impl;
 
+import lombok.Getter;
 import model.country.ICountry;
 import model.tournament.INationalLeague;
 import model.enums.Nationality;
@@ -8,22 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Country implements ICountry {
-	private Nationality country;
+	@Getter
+	private Nationality nationality;
 	private List<INationalLeague> leagues = new ArrayList<>();
 
 
 
 	public Country(Nationality country) {
-		this.country = country;
+		nationality = country;
 	}
 
 	public Country(String country) {
-		this.country = Nationality.fromString(country);
-	}
-
-	@Override
-	public Nationality nationality() {
-		return country;
+		nationality = Nationality.fromString(country);
 	}
 
 	@Override

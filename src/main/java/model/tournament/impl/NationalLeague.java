@@ -99,7 +99,7 @@ public class NationalLeague implements INationalLeague {
 	}
 
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 }

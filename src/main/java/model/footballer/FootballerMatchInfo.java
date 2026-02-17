@@ -1,38 +1,38 @@
 package model.footballer;
 
 public class FootballerMatchInfo {
-    private String _team;
-    private short _number;
-    private boolean _onField;
-    private boolean _onBench;
+    private String team;
+    private short number;
+    private boolean onField;
+    private boolean onBench;
 
     public FootballerMatchInfo(String team, short number, boolean onField) {
-        _team = team;
-        _number = number;
-        _onField = onField;
-        _onBench = !onField;
+        this.team = team;
+        this.number = number;
+        this.onField = onField;
+        onBench = !onField;
     }
 
     String team() {
-        return _team;
+        return team;
     }
 
     short number() {
-        return _number;
+        return number;
     }
 
     boolean onField() {
-        return _onField;
+        return onField;
     }
 
     boolean onBench() {
-        return _onBench;
+        return onBench;
     }
 
     void reset(String team, short number, boolean onField) {
-        _team = team;
-        _number = number;
-        _onField = onField;
-        _onBench = !onField;
+        this.team = team;
+        this.number = number;
+        this.onField = onField;
+        onBench = !onField;
     }
 }

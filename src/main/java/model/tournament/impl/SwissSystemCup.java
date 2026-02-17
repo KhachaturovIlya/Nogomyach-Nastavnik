@@ -112,7 +112,7 @@ public class SwissSystemCup implements ISwissSystemCup {
 	}
 
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 

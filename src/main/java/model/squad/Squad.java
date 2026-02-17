@@ -1,39 +1,23 @@
 package model.squad;
 
-import model.formation.IFormation;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import model.enums.Role;
+import model.formation.Formation;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@AllArgsConstructor
 public class Squad implements ISquad {
-	private IFormation formation;
+	@Getter
+	private Formation formation;
+	@Getter
 	private Map<Short, Role> startingXI;
+	@Getter
 	private ArrayList<Short> bench;
 
-
-
-	public Squad(IFormation formation, Map<Short, Role> startingXI, ArrayList<Short> bench) {
-		this.formation = formation;
-		this.startingXI = startingXI;
-		this.bench = bench;
-	}
-
-	@Override
-	public IFormation formation() {
-		return formation;
-	}
-
-	@Override
-	public Map<Short, Role> startingXI() {
-		return startingXI;
-	}
-
-	@Override
-	public ArrayList<Short> bench() {
-		return bench;
-	}
 
 	@Override
 	public void replacePlayerInStartingXI(short oldNumber, short newNumber) {
@@ -55,7 +39,7 @@ public class Squad implements ISquad {
 	}
 
 	@Override
-	public void changeFormation(IFormation formation) {
+	public void changeFormation(Formation formation) {
 		this.formation = formation;
 		startingXI.clear();
 		bench.clear();

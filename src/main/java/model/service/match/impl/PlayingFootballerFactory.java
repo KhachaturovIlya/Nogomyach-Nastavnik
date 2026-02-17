@@ -14,7 +14,7 @@ public class PlayingFootballerFactory implements IPlayingFootballerFactory {
 
     @Override
     public IPlayingFootballer produce(IFootballerProfile player) {
-        Role role = player.preferedRoles().getFirst();
+        Role role = player.getPreferedRoles().getFirst();
         return produce(player, role);
     }
 }

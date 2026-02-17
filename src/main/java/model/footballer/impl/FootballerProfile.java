@@ -1,5 +1,7 @@
 package model.footballer.impl;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.enums.Nationality;
 import model.enums.Role;
 import model.enums.FootballerCharacteristicsEnum;
@@ -11,17 +13,27 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FootballerProfile implements IFootballerProfile {
+	@Getter
     private final String name;
+	@Getter
     private final Nationality nationality;
+	@Getter
     private List<Role> preferedRoles;
+	@Getter @Setter
     private short number;
+	@Getter
     private final LocalDate dateOfBirth;
+	@Getter @Setter
     private int transferCost;
 
+	@Getter
     private boolean injured;
+	@Getter
     private short daysToHeal;
 
+	@Getter @Setter
     private double currentPhysicalForm = 1.0;
+	@Getter @Setter
     private double currentEmotionalState = 1.0;
 
     private BaseFootballerCharacteristics characteristics;
@@ -46,33 +58,8 @@ public class FootballerProfile implements IFootballerProfile {
     }
 
     @Override
-    public short number() {
-        return number;
-    }
-
-    @Override
-    public void setNumber(short number) {
-        this.number = number;
-    }
-
-    @Override
-    public List<Role> preferedRoles() {
-        return preferedRoles;
-    }
-
-    @Override
     public void addRole(Role role) {
         preferedRoles.add(role);
-    }
-
-    @Override
-    public int transferCost() {
-        return transferCost;
-    }
-
-    @Override
-    public void setTransferCost(int cost) {
-        transferCost = cost;
     }
 
     @Override
@@ -106,29 +93,14 @@ public class FootballerProfile implements IFootballerProfile {
     }
 
     @Override
-    public boolean injured() {
-        return injured;
-    }
-
-    @Override
     public void setInjury(short daysToHeal) {
         injured = true;
         this.daysToHeal = daysToHeal;
     }
 
     @Override
-    public short daysToHeal() {
-        return daysToHeal;
-    }
-
-    @Override
     public void updateInjury() {
         daysToHeal -= 1;
-    }
-
-    @Override
-    public double currentPhysicalForm() {
-        return currentPhysicalForm;
     }
 
     @Override
@@ -142,16 +114,6 @@ public class FootballerProfile implements IFootballerProfile {
     }
 
     @Override
-    public void setPhysicalForm(double physicalForm) {
-        currentPhysicalForm = physicalForm;
-    }
-
-    @Override
-    public double currentEmotionalState() {
-        return currentEmotionalState;
-    }
-
-    @Override
     public void increaseEmotionalState(double add) {
         currentEmotionalState += Math.min(1.0 - currentEmotionalState, add);
     }
@@ -159,25 +121,5 @@ public class FootballerProfile implements IFootballerProfile {
     @Override
     public void decreaseEmotionalState(double loss) {
         currentEmotionalState -= Math.min(currentEmotionalState, loss);
-    }
-
-    @Override
-    public void setEmotionalState(double emotionalState) {
-        currentEmotionalState = emotionalState;
-    }
-
-	@Override
-	public LocalDate dateOfBirth() {
-		return dateOfBirth;
-	}
-
-    @Override
-    public String name() {
-        return name;
-    }
-
-    @Override
-    public Nationality nationality() {
-        return nationality;
     }
 }

@@ -178,7 +178,7 @@ public class JsonEntityLoader implements IEntityLoader {
 			new TypeReference<Club>() {}
 		);
 		teamRepo.addTeam(club);
-		return club.name();
+		return club.getName();
 	}
 
 	private INationalLeague loadLeague(Path leagueConfigPath) throws IOException {
@@ -212,7 +212,7 @@ public class JsonEntityLoader implements IEntityLoader {
 				try {
 					INationalLeague league = loadLeague(path);
 					tournamentRepo.addTournament(league);
-					league.teams().forEach(t -> tournamentRepo.setTournamentToTeam(t, league.name()));
+					league.teams().forEach(t -> tournamentRepo.setTournamentToTeam(t, league.getName()));
 					country.addLeague(league);
 				} catch (IOException e) {
 					throw new RuntimeException(e);
@@ -280,7 +280,7 @@ public class JsonEntityLoader implements IEntityLoader {
 						new TypeReference<>() {}
 					);
 					tournamentRepo.addTournament(tournament);
-					tournament.teams().forEach(t -> tournamentRepo.setTournamentToTeam(t, tournament.name()));
+					tournament.teams().forEach(t -> tournamentRepo.setTournamentToTeam(t, tournament.getName()));
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}

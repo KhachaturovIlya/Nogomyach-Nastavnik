@@ -1,7 +1,6 @@
 package model.service.squad.impl;
 
 import model.footballer.IFootballerProfile;
-import model.formation.IFormation;
 import model.service.squad.ISquadFactory;
 import model.service.squad.ISquadService;
 import model.squad.ISquad;
@@ -61,7 +60,7 @@ public class SquadService implements ISquadService {
 
             if (profile.isEmpty()) {
                 throw new NoSuchElementException(
-                        "no footballer with " + number + "number in team \"" + _team.name() + "\""
+                        "no footballer with " + number + "number in team \"" + _team.getName() + "\""
                 );
             }
 
@@ -77,7 +76,7 @@ public class SquadService implements ISquadService {
 
             if (profile.isEmpty()) {
                 throw new NoSuchElementException(
-                        "no footballer with " + number + "number in team \"" + _team.name() + "\""
+                        "no footballer with " + number + "number in team \"" + _team.getName() + "\""
                 );
             }
 
@@ -92,7 +91,7 @@ public class SquadService implements ISquadService {
 
         if (profile.isEmpty()) {
             throw new NoSuchElementException(
-                    "no footballer with " + numberNew + "number in team \"" + _team.name() + "\""
+                    "no footballer with " + numberNew + "number in team \"" + _team.getName() + "\""
             );
         }
 
@@ -107,7 +106,7 @@ public class SquadService implements ISquadService {
 
         if (profile.isEmpty()) {
             throw new NoSuchElementException(
-                    "no footballer with " + numberNew + "number in team \"" + _team.name() + "\""
+                    "no footballer with " + numberNew + "number in team \"" + _team.getName() + "\""
             );
         }
 
@@ -163,10 +162,10 @@ public class SquadService implements ISquadService {
 
 	@Override
 	public void addSquadToChange(ISquad squad) {
-		_formation = Optional.of(squad.formation());
-		_startingXI = squad.startingXI();
-		_bench = squad.bench();
+		_formation = Optional.of(squad.getFormation());
+		_startingXI = squad.getStartingXI();
+		_bench = squad.getBench();
 		_freeRoles.clear();
-		Arrays.stream(_formation.get().roles()).forEach(role -> _occupiedRoles.add(role));
+		Arrays.stream(_formation.get().getRoles()).forEach(role -> _occupiedRoles.add(role));
 	}
 }

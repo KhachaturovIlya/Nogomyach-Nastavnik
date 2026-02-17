@@ -1,5 +1,6 @@
 package model.repository.impl;
 
+import lombok.NoArgsConstructor;
 import model.repository.ITournamentRepository;
 import model.tournament.ITournament;
 
@@ -8,19 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NoArgsConstructor
 public class TournamentRepository implements ITournamentRepository {
-	private Map<String, ITournament> tournaments;
-	private Map<String, List<String>> teamsAndTournamentsMap;
+	private Map<String, ITournament> tournaments = new HashMap<>();
+	private Map<String, List<String>> teamsAndTournamentsMap = new HashMap<>();
 
-
-	public TournamentRepository() {
-		tournaments = new HashMap<>();
-		teamsAndTournamentsMap = new HashMap<>();
-	}
 
 	@Override
 	public void addTournament(ITournament tournament) {
-		tournaments.put(tournament.name(), tournament);
+		tournaments.put(tournament.getName(), tournament);
 	}
 
 	@Override

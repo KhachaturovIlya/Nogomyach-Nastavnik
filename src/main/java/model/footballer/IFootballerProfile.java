@@ -7,13 +7,13 @@ import model.enums.Role;
 import java.util.List;
 
 public interface IFootballerProfile extends IHasName, IHasDateOfBirth, IHasNationality {
-    short number();
+    short getNumber();
     void setNumber(short number);
 
-    List<Role> preferedRoles();
+    List<Role> getPreferedRoles();
     void addRole(Role role);
 
-    int transferCost();
+    int getTransferCost();
     void setTransferCost(int cost);
     void increaseTransferCost(int costAdd);
     void decreaseTransferCost(int costLoss);
@@ -23,18 +23,18 @@ public interface IFootballerProfile extends IHasName, IHasDateOfBirth, IHasNatio
     void increaseCharacteristic(FootballerCharacteristicsEnum characteristic, short add);
     void decreaseCharacteristic(FootballerCharacteristicsEnum characteristic, short loss);
 
-    boolean injured();
+    boolean isInjured();
     void setInjury(short daysToHeal);
-    short daysToHeal();
+    short getDaysToHeal();
     void updateInjury();
 
-    double currentPhysicalForm();
+    double getCurrentPhysicalForm();
     void increasePhysicalForm(double add);
     void decreasePhysicalForm(double loss);
-    void setPhysicalForm(double physicalForm);
+    void setCurrentPhysicalForm(double physicalForm);
 
-    double currentEmotionalState();
+    double getCurrentEmotionalState();
     void increaseEmotionalState(double add);
     void decreaseEmotionalState(double loss);
-    void setEmotionalState(double emotionalState);
+    void setCurrentEmotionalState(double emotionalState);
 }

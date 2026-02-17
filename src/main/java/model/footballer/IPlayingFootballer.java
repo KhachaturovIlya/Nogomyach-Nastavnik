@@ -5,12 +5,12 @@ import model.enums.FootballerCharacteristicsEnum;
 import model.enums.Role;
 
 public interface IPlayingFootballer extends IMovable, IHasSize {
-    Role role();
+    Role getRole();
     void setRole(Role role);
-    double stamina();
+    double getStamina();
     void increaseStamina(double add);
     void decreaseStamina(double loss);
-    short ID();
+    short getID();
     void setID(short ID);
     short charasteristic(FootballerCharacteristicsEnum characteristic);
 }

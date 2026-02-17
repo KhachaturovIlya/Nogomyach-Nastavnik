@@ -71,7 +71,7 @@ public class DefaultCup implements ICup {
 	}
 
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 
